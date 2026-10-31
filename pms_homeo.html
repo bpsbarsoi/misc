@@ -2,206 +2,309 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Homeopathic Patient Management System</title>
 
 <style>
-:root{
---primary:#087f6e;
---dark:#00574b;
---light:#e0f2f1;
---bg:#f1f7f6;
---white:#fff;
---text:#263238;
+:root {
+    --primary: #087f6e;
+    --dark: #00574b;
+    --light: #e0f2f1;
+    --bg: #f1f7f6;
+    --white: #ffffff;
+    --text: #263238;
+    --danger: #c62828;
 }
 
-*{box-sizing:border-box}
-
-body{
-margin:0;
-font-family:Arial,sans-serif;
-background:var(--bg);
-color:var(--text);
+* {
+    box-sizing: border-box;
 }
 
-header{
-background:linear-gradient(135deg,#087f6e,#004d40);
-color:white;
-padding:18px;
-display:flex;
-justify-content:space-between;
-align-items:center;
-flex-wrap:wrap;
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
 }
 
-header h2{font-size:19px;margin:0}
-
-button{
-cursor:pointer;
-border:0;
-border-radius:7px;
-padding:11px 15px;
+header {
+    background: linear-gradient(135deg, #087f6e, #004d40);
+    color: white;
+    padding: 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
 }
 
-.lang{
-background:white;
-color:var(--primary);
+header h2 {
+    font-size: 19px;
+    margin: 0;
 }
 
-.layout{display:flex;min-height:90vh}
-
-.sidebar{
-width:220px;
-background:white;
-padding:12px;
-flex-shrink:0;
+button {
+    cursor: pointer;
+    border: 0;
+    border-radius: 7px;
+    padding: 11px 15px;
+    font-size: 14px;
 }
 
-.sidebar button{
-width:100%;
-text-align:left;
-margin-bottom:5px;
-background:white;
-color:#455a64;
+.lang {
+    background: white;
+    color: var(--primary);
+}
+
+.layout {
+    display: flex;
+    min-height: 88vh;
+}
+
+.sidebar {
+    width: 225px;
+    background: white;
+    padding: 12px;
+    flex-shrink: 0;
+}
+
+.sidebar button {
+    width: 100%;
+    text-align: left;
+    margin-bottom: 6px;
+    background: white;
+    color: #455a64;
 }
 
 .sidebar button.active,
-.sidebar button:hover{
-background:var(--light);
-color:var(--primary);
-font-weight:bold;
+.sidebar button:hover {
+    background: var(--light);
+    color: var(--primary);
+    font-weight: bold;
 }
 
-main{flex:1;padding:20px;min-width:0}
-
-.page{display:none}
-.page.active{display:block}
-
-h2.title{
-color:var(--dark);
-font-size:22px;
-margin-top:0;
+main {
+    flex: 1;
+    padding: 20px;
+    min-width: 0;
 }
 
-.cards{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(145px,1fr));
-gap:12px;
+.page {
+    display: none;
 }
 
-.card,.panel{
-background:white;
-padding:18px;
-border-radius:12px;
-box-shadow:0 3px 12px #00000009;
-margin-bottom:15px;
+.page.active {
+    display: block;
 }
 
-.card h4{font-size:13px;color:#78909c;margin:0 0 10px}
-.card strong{font-size:27px;color:var(--primary)}
-
-.panel h3{color:var(--dark);margin-top:0}
-
-.form-grid{
-display:grid;
-grid-template-columns:repeat(2,minmax(0,1fr));
-gap:13px;
+h2.title {
+    color: var(--dark);
+    font-size: 22px;
+    margin-top: 0;
 }
 
-.field{
-display:flex;
-flex-direction:column;
-gap:6px;
+.cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(145px, 1fr));
+    gap: 12px;
 }
 
-.full{grid-column:1/-1}
-
-label{font-size:13px;font-weight:bold}
-
-input,select,textarea{
-width:100%;
-padding:11px;
-border:1px solid #cfd8dc;
-border-radius:7px;
-font-size:14px;
-background:white;
+.card,
+.panel {
+    background: white;
+    padding: 18px;
+    border-radius: 12px;
+    box-shadow: 0 3px 12px #00000009;
+    margin-bottom: 15px;
 }
 
-textarea{min-height:70px}
-
-.primary{
-background:var(--primary);
-color:white;
-margin-top:15px;
+.card h4 {
+    font-size: 13px;
+    color: #78909c;
+    margin: 0 0 10px;
 }
 
-.secondary{
-background:var(--light);
-color:var(--dark);
+.card strong {
+    font-size: 27px;
+    color: var(--primary);
 }
 
-.table-wrap{
-overflow-x:auto;
-background:white;
-border-radius:9px;
+.panel h3 {
+    color: var(--dark);
+    margin-top: 0;
 }
 
-table{
-width:100%;
-border-collapse:collapse;
-min-width:650px;
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 13px;
 }
 
-td,th{
-padding:12px;
-border-bottom:1px solid #eee;
-text-align:left;
-font-size:13px;
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
 }
 
-th{background:var(--light);color:var(--dark)}
-
-.search{margin-bottom:12px}
-
-.msg{
-padding:12px;
-margin-bottom:12px;
-border-radius:7px;
-display:none;
+.full {
+    grid-column: 1 / -1;
 }
 
-.success{background:#e8f5e9;color:#2e7d32}
-.error{background:#ffebee;color:#c62828}
-
-.record{
-padding:12px 0;
-border-bottom:1px solid #eee;
-font-size:13px;
+label {
+    font-size: 13px;
+    font-weight: bold;
 }
 
-footer{
-text-align:center;
-padding:20px;
-font-size:12px;
-color:#78909c;
+input,
+select,
+textarea {
+    width: 100%;
+    padding: 11px;
+    border: 1px solid #cfd8dc;
+    border-radius: 7px;
+    font-size: 14px;
+    background: white;
+    font-family: inherit;
 }
 
-@media(max-width:700px){
-.layout{display:block}
-.sidebar{
-width:100%;
-display:flex;
-overflow-x:auto;
-gap:5px;
+textarea {
+    min-height: 70px;
+    resize: vertical;
 }
-.sidebar button{
-width:auto;
-white-space:nowrap;
+
+.primary {
+    background: var(--primary);
+    color: white;
+    margin-top: 15px;
 }
-main{padding:12px}
-.form-grid{grid-template-columns:1fr}
-.full{grid-column:auto}
+
+.primary:hover {
+    background: var(--dark);
+}
+
+.secondary {
+    background: var(--light);
+    color: var(--dark);
+}
+
+.danger {
+    background: #ffebee;
+    color: var(--danger);
+}
+
+.table-wrap {
+    overflow-x: auto;
+    background: white;
+    border-radius: 9px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 650px;
+}
+
+td,
+th {
+    padding: 12px;
+    border-bottom: 1px solid #eee;
+    text-align: left;
+    font-size: 13px;
+}
+
+th {
+    background: var(--light);
+    color: var(--dark);
+}
+
+.search {
+    margin-bottom: 12px;
+}
+
+.msg {
+    padding: 12px;
+    margin-bottom: 12px;
+    border-radius: 7px;
+    display: none;
+    overflow-wrap: anywhere;
+}
+
+.success {
+    background: #e8f5e9;
+    color: #2e7d32;
+}
+
+.error {
+    background: #ffebee;
+    color: #c62828;
+}
+
+.record {
+    padding: 12px 0;
+    border-bottom: 1px solid #eee;
+    font-size: 13px;
+    overflow-wrap: anywhere;
+}
+
+.record strong {
+    color: var(--dark);
+}
+
+.loading {
+    color: #78909c;
+    padding: 10px 0;
+}
+
+.empty {
+    color: #78909c;
+    padding: 12px 0;
+}
+
+footer {
+    text-align: center;
+    padding: 20px;
+    font-size: 12px;
+    color: #78909c;
+}
+
+@media(max-width:700px) {
+
+    .layout {
+        display: block;
+    }
+
+    .sidebar {
+        width: 100%;
+        display: flex;
+        overflow-x: auto;
+        gap: 5px;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+    }
+
+    .sidebar button {
+        width: auto;
+        white-space: nowrap;
+        flex-shrink: 0;
+    }
+
+    main {
+        padding: 12px;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .full {
+        grid-column: auto;
+    }
+
+    header h2 {
+        font-size: 16px;
+    }
 }
 </style>
 </head>
@@ -209,21 +312,43 @@ main{padding:12px}
 <body>
 
 <header>
-<h2>⚕️ Homeopathic Patient Management</h2>
-<button class="lang" onclick="toggleLanguage()">हिंदी</button>
+    <h2>⚕️ Homeopathic Patient Management System</h2>
+    <button class="lang" type="button" onclick="toggleLanguage()">
+        हिंदी / English
+    </button>
 </header>
 
 <div class="layout">
 
 <nav class="sidebar">
 
-<button class="active" onclick="page('dashboard',this)">📊 Dashboard</button>
-<button onclick="page('register',this)">👤 Patient Registration</button>
-<button onclick="page('patients',this)">📋 Patient List</button>
-<button onclick="page('case',this)">📝 Case History</button>
-<button onclick="page('visits',this)">📅 Visits & Follow-up</button>
-<button onclick="page('medicine',this)">💊 Medicine Records</button>
-<button onclick="page('investigations',this)">🧪 Investigations</button>
+    <button class="active" type="button" onclick="page('dashboard',this)">
+        📊 Dashboard
+    </button>
+
+    <button type="button" onclick="page('register',this)">
+        👤 Patient Registration
+    </button>
+
+    <button type="button" onclick="page('patients',this)">
+        📋 Patient List
+    </button>
+
+    <button type="button" onclick="page('case',this)">
+        📝 Case History
+    </button>
+
+    <button type="button" onclick="page('visits',this)">
+        📅 Visits & Follow-up
+    </button>
+
+    <button type="button" onclick="page('medicine',this)">
+        💊 Medicine Records
+    </button>
+
+    <button type="button" onclick="page('investigations',this)">
+        🧪 Investigations
+    </button>
 
 </nav>
 
@@ -231,48 +356,56 @@ main{padding:12px}
 
 <div id="message" class="msg"></div>
 
-
 <!-- DASHBOARD -->
 
 <section id="dashboard" class="page active">
 
-<h2 class="title">Dashboard</h2>
+    <h2 class="title">Dashboard</h2>
 
-<div class="cards">
+    <div class="cards">
 
-<div class="card">
-<h4>Total Patients</h4>
-<strong id="totalPatients">0</strong>
-</div>
+        <div class="card">
+            <h4>Total Patients</h4>
+            <strong id="totalPatients">0</strong>
+        </div>
 
-<div class="card">
-<h4>Active Patients</h4>
-<strong id="activePatients">0</strong>
-</div>
+        <div class="card">
+            <h4>Active Patients</h4>
+            <strong id="activePatients">0</strong>
+        </div>
 
-<div class="card">
-<h4>Total Visits</h4>
-<strong id="totalVisits">0</strong>
-</div>
+        <div class="card">
+            <h4>Total Visits</h4>
+            <strong id="totalVisits">0</strong>
+        </div>
 
-<div class="card">
-<h4>Today's Visits</h4>
-<strong id="todayVisits">0</strong>
-</div>
+        <div class="card">
+            <h4>Today's Visits</h4>
+            <strong id="todayVisits">0</strong>
+        </div>
 
-<div class="card">
-<h4>Medicine Records</h4>
-<strong id="totalMedicines">0</strong>
-</div>
+        <div class="card">
+            <h4>Medicine Records</h4>
+            <strong id="totalMedicines">0</strong>
+        </div>
 
-</div>
+    </div>
 
-<div class="panel">
-<h3>Welcome</h3>
-<p>Homeopathic Patient Management System</p>
-<p>Manage patient registration, case history, visits, follow-ups and investigation records.</p>
-<button class="primary" onclick="dashboard()">Refresh Dashboard</button>
-</div>
+    <div class="panel">
+        <h3>Welcome</h3>
+
+        <p>Homeopathic Patient Management System</p>
+
+        <p>
+            Manage patient registration, case history,
+            visits, follow-ups, medicine records
+            and investigations from one place.
+        </p>
+
+        <button class="primary" type="button" onclick="dashboard()">
+            Refresh Dashboard
+        </button>
+    </div>
 
 </section>
 
@@ -281,76 +414,84 @@ main{padding:12px}
 
 <section id="register" class="page">
 
-<h2 class="title">Patient Registration</h2>
+    <h2 class="title">Patient Registration</h2>
 
-<div class="panel">
+    <div class="panel">
 
-<form id="patientForm">
+        <form id="patientForm">
 
-<div class="form-grid">
+            <div class="form-grid">
 
-<div class="field">
-<label>Patient Name *</label>
-<input name="Patient_Name" required>
-</div>
+                <div class="field">
+                    <label>Patient Name *</label>
+                    <input name="Patient_Name" required>
+                </div>
 
-<div class="field">
-<label>Age</label>
-<input name="Age" type="number" min="0">
-</div>
+                <div class="field">
+                    <label>Age</label>
+                    <input name="Age" type="number" min="0">
+                </div>
 
-<div class="field">
-<label>Gender</label>
-<select name="Gender">
-<option value="">Select</option>
-<option>Male</option>
-<option>Female</option>
-<option>Other</option>
-</select>
-</div>
+                <div class="field">
+                    <label>Gender</label>
+                    <select name="Gender">
+                        <option value="">Select</option>
+                        <option>Male</option>
+                        <option>Female</option>
+                        <option>Other</option>
+                    </select>
+                </div>
 
-<div class="field">
-<label>Mobile</label>
-<input name="Mobile" type="tel">
-</div>
+                <div class="field">
+                    <label>Mobile</label>
+                    <input name="Mobile" type="tel">
+                </div>
 
-<div class="field">
-<label>Address</label>
-<textarea name="Address"></textarea>
-</div>
+                <div class="field">
+                    <label>Address</label>
+                    <textarea name="Address"></textarea>
+                </div>
 
-<div class="field">
-<label>Occupation</label>
-<input name="Occupation">
-</div>
+                <div class="field">
+                    <label>Occupation</label>
+                    <input name="Occupation">
+                </div>
 
-<div class="field">
-<label>Blood Group</label>
-<select name="Blood_Group">
-<option value="">Select</option>
-<option>A+</option><option>A-</option>
-<option>B+</option><option>B-</option>
-<option>O+</option><option>O-</option>
-<option>AB+</option><option>AB-</option>
-</select>
-</div>
+                <div class="field">
+                    <label>Blood Group</label>
+                    <select name="Blood_Group">
+                        <option value="">Select</option>
+                        <option>A+</option>
+                        <option>A-</option>
+                        <option>B+</option>
+                        <option>B-</option>
+                        <option>O+</option>
+                        <option>O-</option>
+                        <option>AB+</option>
+                        <option>AB-</option>
+                    </select>
+                </div>
 
-<div class="field">
-<label>Emergency Contact</label>
-<input name="Emergency_Contact">
-</div>
+                <div class="field">
+                    <label>Emergency Contact</label>
+                    <input name="Emergency_Contact" type="tel">
+                </div>
 
-<div class="field full">
-<label>Medical Notes</label>
-<textarea name="Medical_Notes"></textarea>
-</div>
+                <div class="field full">
+                    <label>Medical Notes</label>
+                    <textarea name="Medical_Notes"></textarea>
+                </div>
 
-</div>
+            </div>
 
-<button class="primary">Save Patient</button>
+            <button class="primary" type="submit">
+                Save Patient
+            </button>
 
-</form>
-</div>
+        </form>
+
+    </div>
+
 </section>
 
 
@@ -358,31 +499,44 @@ main{padding:12px}
 
 <section id="patients" class="page">
 
-<h2 class="title">Patient List</h2>
+    <h2 class="title">Patient List</h2>
 
-<div class="panel">
+    <div class="panel">
 
-<input class="search" id="search" placeholder="Search patient name, ID or mobile" oninput="loadPatients()">
+        <input
+            class="search"
+            id="search"
+            placeholder="Search patient name, ID or mobile"
+            oninput="loadPatients()"
+        >
 
-<div class="table-wrap">
+        <div class="table-wrap">
 
-<table>
-<thead>
-<tr>
-<th>Patient ID</th>
-<th>Name</th>
-<th>Age</th>
-<th>Gender</th>
-<th>Mobile</th>
-<th>Action</th>
-</tr>
-</thead>
+            <table>
 
-<tbody id="patientTable"></tbody>
-</table>
+                <thead>
+                    <tr>
+                        <th>Patient ID</th>
+                        <th>Name</th>
+                        <th>Age</th>
+                        <th>Gender</th>
+                        <th>Mobile</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
 
-</div>
-</div>
+                <tbody id="patientTable">
+                    <tr>
+                        <td colspan="6">Loading patients...</td>
+                    </tr>
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
 </section>
 
 
@@ -390,74 +544,82 @@ main{padding:12px}
 
 <section id="case" class="page">
 
-<h2 class="title">Case History</h2>
+    <h2 class="title">Case History</h2>
 
-<div class="panel">
+    <div class="panel">
 
-<form id="caseForm">
+        <form id="caseForm">
 
-<div class="form-grid">
+            <div class="form-grid">
 
-<div class="field full">
-<label>Select Patient</label>
-<select name="Patient_ID" class="patientSelect" required></select>
-</div>
+                <div class="field full">
+                    <label>Select Patient *</label>
+                    <select name="Patient_ID" class="patientSelect" required>
+                        <option value="">Select Patient</option>
+                    </select>
+                </div>
 
-<div class="field">
-<label>Chief Complaint</label>
-<textarea name="Chief_Complaint"></textarea>
-</div>
+                <div class="field">
+                    <label>Chief Complaint</label>
+                    <textarea name="Chief_Complaint"></textarea>
+                </div>
 
-<div class="field">
-<label>Complaint Duration</label>
-<input name="Complaint_Duration">
-</div>
+                <div class="field">
+                    <label>Complaint Duration</label>
+                    <input name="Complaint_Duration">
+                </div>
 
-<div class="field">
-<label>Mental Symptoms</label>
-<textarea name="Mental_Symptoms"></textarea>
-</div>
+                <div class="field">
+                    <label>Mental Symptoms</label>
+                    <textarea name="Mental_Symptoms"></textarea>
+                </div>
 
-<div class="field">
-<label>Physical Symptoms</label>
-<textarea name="Physical_Symptoms"></textarea>
-</div>
+                <div class="field">
+                    <label>Physical Symptoms</label>
+                    <textarea name="Physical_Symptoms"></textarea>
+                </div>
 
-<div class="field">
-<label>Past History</label>
-<textarea name="Past_History"></textarea>
-</div>
+                <div class="field">
+                    <label>Past History</label>
+                    <textarea name="Past_History"></textarea>
+                </div>
 
-<div class="field">
-<label>Family History</label>
-<textarea name="Family_History"></textarea>
-</div>
+                <div class="field">
+                    <label>Family History</label>
+                    <textarea name="Family_History"></textarea>
+                </div>
 
-<div class="field">
-<label>Personal History</label>
-<textarea name="Personal_History"></textarea>
-</div>
+                <div class="field">
+                    <label>Personal History</label>
+                    <textarea name="Personal_History"></textarea>
+                </div>
 
-<div class="field">
-<label>Allergies</label>
-<textarea name="Allergies"></textarea>
-</div>
+                <div class="field">
+                    <label>Allergies</label>
+                    <textarea name="Allergies"></textarea>
+                </div>
 
-<div class="field full">
-<label>Other Notes</label>
-<textarea name="Other_Notes"></textarea>
-</div>
+                <div class="field full">
+                    <label>Other Notes</label>
+                    <textarea name="Other_Notes"></textarea>
+                </div>
 
-</div>
+            </div>
 
-<button class="primary">Save Case History</button>
-</form>
-</div>
+            <button class="primary" type="submit">
+                Save Case History
+            </button>
 
-<div class="panel">
-<h3>Previous Case History</h3>
-<div id="caseRecords">Select a patient.</div>
-</div>
+        </form>
+
+    </div>
+
+    <div class="panel">
+        <h3>Previous Case History</h3>
+        <div id="caseRecords" class="empty">
+            Select a patient.
+        </div>
+    </div>
 
 </section>
 
@@ -466,60 +628,68 @@ main{padding:12px}
 
 <section id="visits" class="page">
 
-<h2 class="title">Visits & Follow-up</h2>
+    <h2 class="title">Visits & Follow-up</h2>
 
-<div class="panel">
+    <div class="panel">
 
-<form id="visitForm">
+        <form id="visitForm">
 
-<div class="form-grid">
+            <div class="form-grid">
 
-<div class="field full">
-<label>Select Patient</label>
-<select name="Patient_ID" class="patientSelect" required></select>
-</div>
+                <div class="field full">
+                    <label>Select Patient *</label>
+                    <select name="Patient_ID" class="patientSelect" required>
+                        <option value="">Select Patient</option>
+                    </select>
+                </div>
 
-<div class="field">
-<label>Visit Date</label>
-<input name="Visit_Date" type="date" id="visitDate">
-</div>
+                <div class="field">
+                    <label>Visit Date</label>
+                    <input name="Visit_Date" type="date" id="visitDate">
+                </div>
 
-<div class="field">
-<label>Follow-up Date</label>
-<input name="Followup_Date" type="date">
-</div>
+                <div class="field">
+                    <label>Follow-up Date</label>
+                    <input name="Followup_Date" type="date">
+                </div>
 
-<div class="field">
-<label>Symptoms</label>
-<textarea name="Symptoms"></textarea>
-</div>
+                <div class="field">
+                    <label>Symptoms</label>
+                    <textarea name="Symptoms"></textarea>
+                </div>
 
-<div class="field">
-<label>Patient Condition</label>
-<select name="Patient_Condition">
-<option value="">Select</option>
-<option>Improved</option>
-<option>Unchanged</option>
-<option>Worsened</option>
-<option>Not Assessed</option>
-</select>
-</div>
+                <div class="field">
+                    <label>Patient Condition</label>
+                    <select name="Patient_Condition">
+                        <option value="">Select</option>
+                        <option>Improved</option>
+                        <option>Unchanged</option>
+                        <option>Worsened</option>
+                        <option>Not Assessed</option>
+                    </select>
+                </div>
 
-<div class="field full">
-<label>Notes</label>
-<textarea name="Notes"></textarea>
-</div>
+                <div class="field full">
+                    <label>Notes</label>
+                    <textarea name="Notes"></textarea>
+                </div>
 
-</div>
+            </div>
 
-<button class="primary">Save Visit</button>
-</form>
-</div>
+            <button class="primary" type="submit">
+                Save Visit
+            </button>
 
-<div class="panel">
-<h3>Visit History</h3>
-<div id="visitRecords">Select a patient.</div>
-</div>
+        </form>
+
+    </div>
+
+    <div class="panel">
+        <h3>Visit History</h3>
+        <div id="visitRecords" class="empty">
+            Select a patient.
+        </div>
+    </div>
 
 </section>
 
@@ -528,59 +698,67 @@ main{padding:12px}
 
 <section id="medicine" class="page">
 
-<h2 class="title">Medicine Records</h2>
+    <h2 class="title">Medicine Records</h2>
 
-<div class="panel">
+    <div class="panel">
 
-<form id="medicineForm">
+        <form id="medicineForm">
 
-<div class="form-grid">
+            <div class="form-grid">
 
-<div class="field full">
-<label>Select Patient</label>
-<select name="Patient_ID" class="patientSelect" required></select>
-</div>
+                <div class="field full">
+                    <label>Select Patient *</label>
+                    <select name="Patient_ID" class="patientSelect" required>
+                        <option value="">Select Patient</option>
+                    </select>
+                </div>
 
-<div class="field">
-<label>Medicine Name</label>
-<input name="Medicine_Name">
-</div>
+                <div class="field">
+                    <label>Medicine Name</label>
+                    <input name="Medicine_Name">
+                </div>
 
-<div class="field">
-<label>Potency</label>
-<input name="Potency">
-</div>
+                <div class="field">
+                    <label>Potency</label>
+                    <input name="Potency">
+                </div>
 
-<div class="field">
-<label>Dosage</label>
-<input name="Dosage">
-</div>
+                <div class="field">
+                    <label>Dosage</label>
+                    <input name="Dosage">
+                </div>
 
-<div class="field">
-<label>Frequency</label>
-<input name="Frequency">
-</div>
+                <div class="field">
+                    <label>Frequency</label>
+                    <input name="Frequency">
+                </div>
 
-<div class="field">
-<label>Duration</label>
-<input name="Duration">
-</div>
+                <div class="field">
+                    <label>Duration</label>
+                    <input name="Duration">
+                </div>
 
-<div class="field full">
-<label>Notes</label>
-<textarea name="Notes"></textarea>
-</div>
+                <div class="field full">
+                    <label>Notes</label>
+                    <textarea name="Notes"></textarea>
+                </div>
 
-</div>
+            </div>
 
-<button class="primary">Save Medicine Record</button>
-</form>
-</div>
+            <button class="primary" type="submit">
+                Save Medicine Record
+            </button>
 
-<div class="panel">
-<h3>Medicine History</h3>
-<div id="medicineRecords">Select a patient.</div>
-</div>
+        </form>
+
+    </div>
+
+    <div class="panel">
+        <h3>Medicine History</h3>
+        <div id="medicineRecords" class="empty">
+            Select a patient.
+        </div>
+    </div>
 
 </section>
 
@@ -589,49 +767,57 @@ main{padding:12px}
 
 <section id="investigations" class="page">
 
-<h2 class="title">Investigations</h2>
+    <h2 class="title">Investigations</h2>
 
-<div class="panel">
+    <div class="panel">
 
-<form id="investigationForm">
+        <form id="investigationForm">
 
-<div class="form-grid">
+            <div class="form-grid">
 
-<div class="field full">
-<label>Select Patient</label>
-<select name="Patient_ID" class="patientSelect" required></select>
-</div>
+                <div class="field full">
+                    <label>Select Patient *</label>
+                    <select name="Patient_ID" class="patientSelect" required>
+                        <option value="">Select Patient</option>
+                    </select>
+                </div>
 
-<div class="field">
-<label>Investigation Name</label>
-<input name="Investigation_Name">
-</div>
+                <div class="field">
+                    <label>Investigation Name</label>
+                    <input name="Investigation_Name">
+                </div>
 
-<div class="field">
-<label>Test Date</label>
-<input name="Test_Date" type="date">
-</div>
+                <div class="field">
+                    <label>Test Date</label>
+                    <input name="Test_Date" type="date">
+                </div>
 
-<div class="field">
-<label>Result</label>
-<textarea name="Result"></textarea>
-</div>
+                <div class="field">
+                    <label>Result</label>
+                    <textarea name="Result"></textarea>
+                </div>
 
-<div class="field">
-<label>Report Notes</label>
-<textarea name="Report_Notes"></textarea>
-</div>
+                <div class="field">
+                    <label>Report Notes</label>
+                    <textarea name="Report_Notes"></textarea>
+                </div>
 
-</div>
+            </div>
 
-<button class="primary">Save Investigation</button>
-</form>
-</div>
+            <button class="primary" type="submit">
+                Save Investigation
+            </button>
 
-<div class="panel">
-<h3>Investigation History</h3>
-<div id="investigationRecords">Select a patient.</div>
-</div>
+        </form>
+
+    </div>
+
+    <div class="panel">
+        <h3>Investigation History</h3>
+        <div id="investigationRecords" class="empty">
+            Select a patient.
+        </div>
+    </div>
 
 </section>
 
@@ -639,7 +825,8 @@ main{padding:12px}
 </div>
 
 <footer>
-Homeopathic Patient Management System | Hindi + English
+    Homeopathic Patient Management System |
+    Private Patient Records
 </footer>
 
 
@@ -649,126 +836,190 @@ Homeopathic Patient Management System | Hindi + English
 // GOOGLE APPS SCRIPT API URL
 // ==========================================
 
-const API_URL = "https://script.google.com/macros/s/AKfycbzDr6FopBQ8ZlButaibHcahbCwOth82JJskMn5T-uK0lBW5DVOIFaX4paKYdm3gobkm/exec";
+const API_URL =
+"https://script.google.com/macros/s/AKfycbzDr6FopBQ8ZlButaibHcahbCwOth82JJskMn5T-uK0lBW5DVOIFaX4paKYdm3gobkm/exec";
 
 
 // ==========================================
-// JSONP API CALL
+// API REQUEST
 // ==========================================
 
-function api(action,data={}) {
+function api(action, data = {}) {
 
-return new Promise((resolve,reject)=>{
+    return new Promise((resolve, reject) => {
 
-if(!API_URL || API_URL.includes("PASTE_")){
-reject(new Error("Apps Script API URL is missing"));
-return;
-}
+        const callback =
+            "jsonp_" + Date.now() +
+            "_" + Math.floor(Math.random() * 100000);
 
-const callback =
-"jsonp_" + Date.now() + "_" + Math.floor(Math.random()*100000);
+        const script = document.createElement("script");
 
-const script = document.createElement("script");
+        let finished = false;
 
-const timeout = setTimeout(()=>{
+        const timeout = setTimeout(() => {
 
-delete window[callback];
-script.remove();
+            if (finished) return;
 
-reject(new Error("API timeout. Check deployment and Google login."));
+            finished = true;
 
-},20000);
+            delete window[callback];
+            script.remove();
 
-window[callback] = function(response){
+            reject(
+                new Error(
+                    "API timeout. Check Apps Script deployment and permissions."
+                )
+            );
 
-clearTimeout(timeout);
+        }, 20000);
 
-delete window[callback];
-script.remove();
+        window[callback] = function(response) {
 
-resolve(response);
+            if (finished) return;
 
-};
+            finished = true;
 
-const params = new URLSearchParams();
+            clearTimeout(timeout);
 
-params.set("action",action);
-params.set("data",JSON.stringify(data));
-params.set("callback",callback);
+            delete window[callback];
+            script.remove();
 
-script.src = API_URL + "?" + params.toString();
+            resolve(response);
 
-script.onerror = function(){
+        };
 
-clearTimeout(timeout);
+        const params = new URLSearchParams();
 
-delete window[callback];
-script.remove();
+        params.set("action", action);
+        params.set("data", JSON.stringify(data));
+        params.set("callback", callback);
 
-reject(new Error("Could not connect to Apps Script"));
+        script.src = API_URL + "?" + params.toString();
 
-};
+        script.onerror = function() {
 
-document.body.appendChild(script);
+            if (finished) return;
 
-});
+            finished = true;
+
+            clearTimeout(timeout);
+
+            delete window[callback];
+            script.remove();
+
+            reject(
+                new Error("Unable to connect to Google Apps Script.")
+            );
+
+        };
+
+        document.body.appendChild(script);
+
+    });
 
 }
 
 
 // ==========================================
-// GLOBAL HELPERS
+// GLOBAL VARIABLES
 // ==========================================
 
-let patients=[];
+let patients = [];
 
-function msg(text,type="success"){
+let searchTimer = null;
 
-const box=document.getElementById("message");
 
-box.textContent=text;
-box.className="msg "+type;
-box.style.display="block";
+// ==========================================
+// MESSAGE FUNCTION
+// ==========================================
 
-setTimeout(()=>{
-box.style.display="none";
-},5000);
+function msg(text, type = "success") {
+
+    const box = document.getElementById("message");
+
+    box.textContent = text;
+
+    box.className = "msg " + type;
+
+    box.style.display = "block";
+
+    clearTimeout(box.hideTimer);
+
+    box.hideTimer = setTimeout(() => {
+
+        box.style.display = "none";
+
+    }, 5000);
 
 }
 
-function esc(value){
 
-return String(value??"").replace(/[&<>"']/g,c=>({
-"&":"&amp;",
-"<":"&lt;",
-">":"&gt;",
-'"':"&quot;",
-"'":"&#39;"
-}[c]));
+// ==========================================
+// SAFE HTML TEXT
+// ==========================================
+
+function esc(value) {
+
+    return String(value ?? "").replace(/[&<>"']/g, function(c) {
+
+        return {
+            "&": "&amp;",
+            "<": "&lt;",
+            ">": "&gt;",
+            '"': "&quot;",
+            "'": "&#39;"
+        }[c];
+
+    });
 
 }
 
-function page(id,button){
 
-document.querySelectorAll(".page").forEach(p=>{
-p.classList.remove("active");
-});
+// ==========================================
+// PAGE NAVIGATION
+// ==========================================
 
-document.getElementById(id).classList.add("active");
+function page(id, button) {
 
-document.querySelectorAll(".sidebar button").forEach(b=>{
-b.classList.remove("active");
-});
+    document.querySelectorAll(".page").forEach(section => {
 
-button.classList.add("active");
+        section.classList.remove("active");
 
-if(id==="dashboard") dashboard();
+    });
 
-if(id==="patients") loadPatients();
+    const target = document.getElementById(id);
 
-if(["case","visits","medicine","investigations"].includes(id)){
-loadPatients();
-}
+    if (!target) return;
+
+    target.classList.add("active");
+
+    document.querySelectorAll(".sidebar button").forEach(btn => {
+
+        btn.classList.remove("active");
+
+    });
+
+    if (button) {
+
+        button.classList.add("active");
+
+    }
+
+    if (id === "dashboard") {
+
+        dashboard();
+
+    } else if (id === "patients") {
+
+        loadPatients();
+
+    } else if (
+        ["case", "visits", "medicine", "investigations"].includes(id)
+    ) {
+
+        loadPatients();
+
+    }
 
 }
 
@@ -777,25 +1028,38 @@ loadPatients();
 // DASHBOARD
 // ==========================================
 
-async function dashboard(){
+async function dashboard() {
 
-try{
+    try {
 
-const d=await api("dashboard");
+        const result = await api("dashboard");
 
-if(!d.success) throw new Error(d.message);
+        if (!result.success) {
 
-document.getElementById("totalPatients").textContent=d.totalPatients;
-document.getElementById("activePatients").textContent=d.activePatients;
-document.getElementById("totalVisits").textContent=d.totalVisits;
-document.getElementById("todayVisits").textContent=d.todayVisits;
-document.getElementById("totalMedicines").textContent=d.totalMedicineRecords;
+            throw new Error(result.message || "Dashboard error");
 
-}catch(e){
+        }
 
-msg(e.message,"error");
+        document.getElementById("totalPatients").textContent =
+            result.totalPatients ?? 0;
 
-}
+        document.getElementById("activePatients").textContent =
+            result.activePatients ?? 0;
+
+        document.getElementById("totalVisits").textContent =
+            result.totalVisits ?? 0;
+
+        document.getElementById("todayVisits").textContent =
+            result.todayVisits ?? 0;
+
+        document.getElementById("totalMedicines").textContent =
+            result.totalMedicineRecords ?? 0;
+
+    } catch (error) {
+
+        msg(error.message, "error");
+
+    }
 
 }
 
@@ -804,58 +1068,80 @@ msg(e.message,"error");
 // PATIENT REGISTRATION
 // ==========================================
 
-document.getElementById("patientForm").onsubmit=async function(e){
+document.getElementById("patientForm")
+.addEventListener("submit", async function(e) {
 
-e.preventDefault();
+    e.preventDefault();
 
-const data=Object.fromEntries(new FormData(this));
+    const form = this;
 
-try{
+    const data = Object.fromEntries(
+        new FormData(form).entries()
+    );
 
-const r=await api("savePatient",data);
+    try {
 
-if(!r.success) throw new Error(r.message);
+        const result = await api("savePatient", data);
 
-msg("Patient saved. Patient ID: "+r.patientId);
+        if (!result.success) {
 
-this.reset();
+            throw new Error(result.message || "Patient save failed");
 
-await loadPatients();
-await dashboard();
+        }
 
-}catch(error){
+        msg(
+            "Patient saved successfully. Patient ID: " +
+            result.patientId
+        );
 
-msg(error.message,"error");
+        form.reset();
 
-}
+        await loadPatients();
 
-};
+        await dashboard();
+
+    } catch (error) {
+
+        msg(error.message, "error");
+
+    }
+
+});
 
 
 // ==========================================
 // LOAD PATIENTS
 // ==========================================
 
-async function loadPatients(){
+async function loadPatients() {
 
-try{
+    const searchBox = document.getElementById("search");
 
-const search=document.getElementById("search").value;
+    const search = searchBox ? searchBox.value : "";
 
-const r=await api("getPatients",{search});
+    try {
 
-if(!r.success) throw new Error(r.message);
+        const result = await api("getPatients", {
+            search: search
+        });
 
-patients=r.data||[];
+        if (!result.success) {
 
-renderPatients();
-fillPatientDropdowns();
+            throw new Error(result.message || "Patient loading failed");
 
-}catch(e){
+        }
 
-msg(e.message,"error");
+        patients = result.data || [];
 
-}
+        renderPatients();
+
+        fillPatientDropdowns();
+
+    } catch (error) {
+
+        msg(error.message, "error");
+
+    }
 
 }
 
@@ -864,36 +1150,50 @@ msg(e.message,"error");
 // RENDER PATIENT TABLE
 // ==========================================
 
-function renderPatients(){
+function renderPatients() {
 
-const tbody=document.getElementById("patientTable");
+    const tbody = document.getElementById("patientTable");
 
-tbody.innerHTML="";
+    tbody.innerHTML = "";
 
-if(!patients.length){
+    if (!patients.length) {
 
-tbody.innerHTML="<tr><td colspan='6'>No patients found</td></tr>";
+        tbody.innerHTML =
+            "<tr><td colspan='6'>No patients found</td></tr>";
 
-return;
+        return;
 
-}
+    }
 
-patients.forEach(p=>{
+    patients.forEach(patient => {
 
-const tr=document.createElement("tr");
+        const tr = document.createElement("tr");
 
-tr.innerHTML=`
-<td>${esc(p.Patient_ID)}</td>
-<td>${esc(p.Patient_Name)}</td>
-<td>${esc(p.Age)}</td>
-<td>${esc(p.Gender)}</td>
-<td>${esc(p.Mobile)}</td>
-<td><button class="secondary" onclick="viewPatient('${esc(p.Patient_ID)}')">View</button></td>
-`;
+        tr.innerHTML = `
+            <td>${esc(patient.Patient_ID)}</td>
+            <td>${esc(patient.Patient_Name)}</td>
+            <td>${esc(patient.Age)}</td>
+            <td>${esc(patient.Gender)}</td>
+            <td>${esc(patient.Mobile)}</td>
+            <td>
+                <button
+                    class="secondary viewPatientBtn"
+                    type="button">
+                    View
+                </button>
+            </td>
+        `;
 
-tbody.appendChild(tr);
+        tr.querySelector(".viewPatientBtn").addEventListener(
+            "click",
+            function() {
+                viewPatient(patient.Patient_ID);
+            }
+        );
 
-});
+        tbody.appendChild(tr);
+
+    });
 
 }
 
@@ -902,134 +1202,180 @@ tbody.appendChild(tr);
 // PATIENT DROPDOWNS
 // ==========================================
 
-function fillPatientDropdowns(){
+function fillPatientDropdowns() {
 
-document.querySelectorAll(".patientSelect").forEach(select=>{
+    document.querySelectorAll(".patientSelect").forEach(select => {
 
-const old=select.value;
+        const previousValue = select.value;
 
-select.innerHTML="<option value=''>Select Patient</option>";
+        select.innerHTML =
+            '<option value="">Select Patient</option>';
 
-patients.forEach(p=>{
+        patients.forEach(patient => {
 
-const option=document.createElement("option");
+            const option = document.createElement("option");
 
-option.value=p.Patient_ID;
+            option.value = patient.Patient_ID;
 
-option.textContent=p.Patient_Name+" ("+p.Patient_ID+")";
+            option.textContent =
+                patient.Patient_Name +
+                " (" + patient.Patient_ID + ")";
 
-select.appendChild(option);
+            select.appendChild(option);
 
-});
+        });
 
-select.value=old;
+        select.value = previousValue;
 
-});
-
-}
-
-
-// ==========================================
-// VIEW PATIENT
-// ==========================================
-
-async function viewPatient(id){
-
-try{
-
-const r=await api("getPatient",{patientId:id});
-
-if(!r.success) throw new Error("Patient not found");
-
-const p=r.data;
-
-alert(
-"Patient ID: "+p.Patient_ID+
-"\nName: "+p.Patient_Name+
-"\nAge: "+p.Age+
-"\nGender: "+p.Gender+
-"\nMobile: "+p.Mobile+
-"\nAddress: "+p.Address
-);
-
-}catch(e){
-
-msg(e.message,"error");
-
-}
+    });
 
 }
 
 
 // ==========================================
-// FORM HANDLER
+// VIEW PATIENT DETAILS
 // ==========================================
 
-async function saveForm(formId,action,message,recordAction,recordBox){
+async function viewPatient(id) {
 
-document.getElementById(formId).onsubmit=async function(e){
+    try {
 
-e.preventDefault();
+        const result = await api("getPatient", {
+            patientId: id
+        });
 
-const data=Object.fromEntries(new FormData(this));
+        if (!result.success || !result.data) {
 
-try{
+            throw new Error("Patient not found");
 
-const result=await api(action,data);
+        }
 
-if(!result.success) throw new Error(result.message);
+        const p = result.data;
 
-msg(message);
+        alert(
+            "Patient ID: " + p.Patient_ID +
+            "\nName: " + p.Patient_Name +
+            "\nAge: " + p.Age +
+            "\nGender: " + p.Gender +
+            "\nMobile: " + p.Mobile +
+            "\nAddress: " + p.Address +
+            "\nOccupation: " + p.Occupation +
+            "\nBlood Group: " + p.Blood_Group
+        );
 
-this.reset();
+    } catch (error) {
 
-if(recordAction){
-await loadRecords(recordAction,data.Patient_ID,recordBox);
-}
+        msg(error.message, "error");
 
-if(action==="saveVisit" || action==="saveMedicine"){
-dashboard();
-}
-
-};
+    }
 
 }
 
 
 // ==========================================
-// SAVE FORMS
+// COMMON FORM HANDLER
+// ==========================================
+
+function saveForm(
+    formId,
+    action,
+    successMessage,
+    recordAction,
+    recordBox
+) {
+
+    const form = document.getElementById(formId);
+
+    if (!form) return;
+
+    form.addEventListener("submit", async function(e) {
+
+        e.preventDefault();
+
+        const data = Object.fromEntries(
+            new FormData(form).entries()
+        );
+
+        try {
+
+            const result = await api(action, data);
+
+            if (!result.success) {
+
+                throw new Error(
+                    result.message || "Unable to save record"
+                );
+
+            }
+
+            msg(successMessage, "success");
+
+            form.reset();
+
+            if (recordAction && data.Patient_ID) {
+
+                await loadRecords(
+                    recordAction,
+                    data.Patient_ID,
+                    recordBox
+                );
+
+            }
+
+            if (
+                action === "saveVisit" ||
+                action === "saveMedicine"
+            ) {
+
+                await dashboard();
+
+            }
+
+        } catch (error) {
+
+            msg(error.message, "error");
+
+        }
+
+    });
+
+}
+
+
+// ==========================================
+// REGISTER FORMS
 // ==========================================
 
 saveForm(
-"caseForm",
-"saveCaseHistory",
-"Case history saved successfully",
-"getCaseHistory",
-"caseRecords"
+    "caseForm",
+    "saveCaseHistory",
+    "Case history saved successfully",
+    "getCaseHistory",
+    "caseRecords"
 );
 
 saveForm(
-"visitForm",
-"saveVisit",
-"Visit saved successfully",
-"getVisits",
-"visitRecords"
+    "visitForm",
+    "saveVisit",
+    "Visit saved successfully",
+    "getVisits",
+    "visitRecords"
 );
 
 saveForm(
-"medicineForm",
-"saveMedicine",
-"Medicine record saved successfully",
-"getMedicines",
-"medicineRecords"
+    "medicineForm",
+    "saveMedicine",
+    "Medicine record saved successfully",
+    "getMedicines",
+    "medicineRecords"
 );
 
 saveForm(
-"investigationForm",
-"saveInvestigation",
-"Investigation saved successfully",
-"getInvestigations",
-"investigationRecords"
+    "investigationForm",
+    "saveInvestigation",
+    "Investigation saved successfully",
+    "getInvestigations",
+    "investigationRecords"
 );
 
 
@@ -1037,109 +1383,176 @@ saveForm(
 // LOAD RECORDS
 // ==========================================
 
-async function loadRecords(action,id,elementId){
+async function loadRecords(action, patientId, elementId) {
 
-const box=document.getElementById(elementId);
+    const box = document.getElementById(elementId);
 
-if(!id){
+    if (!patientId) {
 
-box.textContent="Select a patient.";
+        box.textContent = "Select a patient.";
 
-return;
+        return;
 
-}
+    }
 
-box.textContent="Loading...";
+    box.textContent = "Loading...";
 
-try{
+    try {
 
-const r=await api(action,{patientId:id});
+        const result = await api(action, {
+            patientId: patientId
+        });
 
-if(!r.success) throw new Error(r.message);
+        if (!result.success) {
 
-box.innerHTML="";
+            throw new Error(
+                result.message || "Unable to load records"
+            );
 
-if(!r.data.length){
+        }
 
-box.textContent="No records found.";
+        box.innerHTML = "";
 
-return;
+        const records = result.data || [];
 
-}
+        if (records.length === 0) {
 
-r.data.forEach(record=>{
+            box.textContent = "No records found.";
 
-const div=document.createElement("div");
+            return;
 
-div.className="record";
+        }
 
-Object.keys(record).forEach(key=>{
+        records.forEach(record => {
 
-if([
-"Patient_ID",
-"Record_ID",
-"Visit_ID",
-"Medicine_ID",
-"Investigation_ID"
-].includes(key)) return;
+            const div = document.createElement("div");
 
-if(!record[key]) return;
+            div.className = "record";
 
-const line=document.createElement("div");
+            Object.keys(record).forEach(key => {
 
-const strong=document.createElement("strong");
+                if ([
+                    "Patient_ID",
+                    "Record_ID",
+                    "Visit_ID",
+                    "Medicine_ID",
+                    "Investigation_ID"
+                ].includes(key)) {
 
-strong.textContent=key.replace(/_/g," ")+": ";
+                    return;
 
-line.appendChild(strong);
+                }
 
-line.appendChild(document.createTextNode(record[key]));
+                if (
+                    record[key] === "" ||
+                    record[key] === null ||
+                    record[key] === undefined
+                ) {
 
-div.appendChild(line);
+                    return;
 
-});
+                }
 
-box.appendChild(div);
+                const line = document.createElement("div");
 
-});
+                const label = document.createElement("strong");
 
-}catch(e){
+                label.textContent =
+                    key.replace(/_/g, " ") + ": ";
 
-box.textContent=e.message;
+                line.appendChild(label);
 
-}
+                line.appendChild(
+                    document.createTextNode(String(record[key]))
+                );
+
+                div.appendChild(line);
+
+            });
+
+            box.appendChild(div);
+
+        });
+
+    } catch (error) {
+
+        box.textContent = error.message;
+
+    }
 
 }
 
 
 // ==========================================
-// PATIENT SELECT EVENTS
+// PATIENT DROPDOWN CHANGE EVENTS
 // ==========================================
 
-document.querySelectorAll(".patientSelect").forEach(select=>{
+document.querySelectorAll(".patientSelect").forEach(select => {
 
-select.addEventListener("change",function(){
+    select.addEventListener("change", function() {
 
-const id=this.value;
+        const patientId = this.value;
 
-const section=this.closest(".page");
+        const section = this.closest(".page");
 
-const pageId=section.id;
+        if (!section) return;
 
-const map={
-case:["getCaseHistory","caseRecords"],
-visits:["getVisits","visitRecords"],
-medicine:["getMedicines","medicineRecords"],
-investigations:["getInvestigations","investigationRecords"]
-};
+        const pageId = section.id;
 
-if(map[pageId]){
+        const recordsMap = {
 
-loadRecords(map[pageId][0],id,map[pageId][1]);
+            case: [
+                "getCaseHistory",
+                "caseRecords"
+            ],
 
-}
+            visits: [
+                "getVisits",
+                "visitRecords"
+            ],
+
+            medicine: [
+                "getMedicines",
+                "medicineRecords"
+            ],
+
+            investigations: [
+                "getInvestigations",
+                "investigationRecords"
+            ]
+
+        };
+
+        if (recordsMap[pageId]) {
+
+            loadRecords(
+                recordsMap[pageId][0],
+                patientId,
+                recordsMap[pageId][1]
+            );
+
+        }
+
+    });
 
 });
+
+
+// ==========================================
+// SEARCH DEBOUNCE
+// ==========================================
+
+const searchInput = document.getElementById("search");
+
+searchInput.addEventListener("input", function() {
+
+    clearTimeout(searchTimer);
+
+    searchTimer = setTimeout(() => {
+
+        loadPatients();
+
+    }, 350);
 
 });
 
@@ -1148,11 +1561,12 @@ loadRecords(map[pageId][0],id,map[pageId][1]);
 // LANGUAGE BUTTON
 // ==========================================
 
-function toggleLanguage(){
+function toggleLanguage() {
 
-alert(
-"हिंदी/English भाषा विकल्प अभी केवल आंशिक है। मुख्य रिकॉर्ड और फॉर्म अंग्रेजी में दिखेंगे।"
-);
+    alert(
+        "Hindi language translation is not yet fully implemented. " +
+        "The current interface is in English."
+    );
 
 }
 
@@ -1161,17 +1575,19 @@ alert(
 // INITIAL LOAD
 // ==========================================
 
-window.addEventListener("load",function(){
+window.addEventListener("load", async function() {
 
-const d=new Date();
+    const today = new Date();
 
-document.getElementById("visitDate").value=
-new Date(d.getTime()-d.getTimezoneOffset()*60000)
-.toISOString().slice(0,10);
+    const localDate = new Date(
+        today.getTime() - today.getTimezoneOffset() * 60000
+    ).toISOString().slice(0, 10);
 
-dashboard();
+    document.getElementById("visitDate").value = localDate;
 
-loadPatients();
+    await dashboard();
+
+    await loadPatients();
 
 });
 
