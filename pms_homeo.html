@@ -1,0 +1,331 @@
+<!DOCTYPE html><html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Homeopathic Patient Management System</title><meta name="theme-color" content="#087f6e">
+<meta name="description" content="Homeopathic Patient Management System - Hindi and English"><style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f1f7f6;
+    color: #263238;
+    min-height: 100vh;
+}
+
+header {
+    background: linear-gradient(135deg, #087f6e, #004d40);
+    color: white;
+    padding: 25px 15px;
+    text-align: center;
+}
+
+.logo {
+    font-size: 42px;
+    margin-bottom: 10px;
+}
+
+header h1 {
+    font-size: 23px;
+    margin-bottom: 8px;
+}
+
+header p {
+    font-size: 14px;
+    opacity: 0.9;
+}
+
+.language {
+    text-align: right;
+    padding: 12px 15px;
+}
+
+.language button {
+    border: none;
+    background: #087f6e;
+    color: white;
+    padding: 9px 15px;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+.container {
+    max-width: 700px;
+    margin: 25px auto;
+    padding: 15px;
+}
+
+.card {
+    background: white;
+    border-radius: 16px;
+    padding: 25px 20px;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.07);
+    text-align: center;
+}
+
+.card h2 {
+    color: #087f6e;
+    margin-bottom: 12px;
+}
+
+.card p {
+    color: #607d8b;
+    line-height: 1.7;
+    font-size: 14px;
+}
+
+.main-btn {
+    display: block;
+    width: 100%;
+    padding: 15px;
+    margin-top: 20px;
+    border: none;
+    border-radius: 10px;
+    background: #087f6e;
+    color: white;
+    font-size: 17px;
+    font-weight: bold;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.main-btn:hover {
+    background: #00574b;
+}
+
+.secondary-btn {
+    background: #e0f2f1;
+    color: #00695c;
+}
+
+.features {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.feature {
+    background: white;
+    padding: 18px 10px;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.05);
+}
+
+.feature span {
+    font-size: 27px;
+}
+
+.feature h3 {
+    font-size: 14px;
+    margin-top: 9px;
+    color: #087f6e;
+}
+
+footer {
+    text-align: center;
+    padding: 25px 10px;
+    color: #78909c;
+    font-size: 12px;
+}
+
+#loading {
+    display: none;
+    margin-top: 15px;
+    color: #087f6e;
+    font-size: 14px;
+}
+
+@media(max-width:400px) {
+    header h1 {
+        font-size: 19px;
+    }
+
+    .features {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+</style></head><body><header>
+    <div class="logo">⚕️</div>
+    <h1 id="title">Homeopathic Patient Management System</h1>
+    <p id="subtitle">Smart Digital Patient Records & Management</p>
+</header><div class="language">
+    <button onclick="changeLanguage()" id="langBtn">
+        हिंदी / English
+    </button>
+</div><div class="container"><div class="card">
+
+    <h2 id="welcome">Welcome</h2>
+
+    <p id="description">
+        Manage patient registration, case history,
+        visits, follow-ups, medication records and
+        investigation reports from one place.
+    </p>
+
+    <button class="main-btn" onclick="openApp()" id="openBtn">
+        Open Patient Management System
+    </button>
+
+    <button class="main-btn secondary-btn"
+            onclick="openFullscreen()"
+            id="fullBtn">
+        Open Full Screen
+    </button>
+
+    <div id="loading">
+        Opening application...
+    </div>
+
+</div>
+
+<div class="features">
+
+    <div class="feature">
+        <span>👨‍⚕️</span>
+        <h3 id="f1">Patient Registration</h3>
+    </div>
+
+    <div class="feature">
+        <span>📋</span>
+        <h3 id="f2">Case History</h3>
+    </div>
+
+    <div class="feature">
+        <span>📅</span>
+        <h3 id="f3">Visits & Follow-up</h3>
+    </div>
+
+    <div class="feature">
+        <span>💊</span>
+        <h3 id="f4">Medicine Records</h3>
+    </div>
+
+    <div class="feature">
+        <span>🧪</span>
+        <h3 id="f5">Investigations</h3>
+    </div>
+
+    <div class="feature">
+        <span>📊</span>
+        <h3 id="f6">Dashboard</h3>
+    </div>
+
+</div>
+
+</div><footer>
+    <p id="footerText">
+        Homeopathic Patient Management System
+    </p>
+    <p>Private Patient Records | Hindi + English</p>
+</footer><script>
+
+// =======================================
+// GOOGLE APPS SCRIPT WEB APP URL
+// =======================================
+
+// यहाँ अपना deployed Web App URL डालें.
+// URL का अंत /exec से होना चाहिए.
+
+const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzKUCkU84CtUjlrrKiugdp4DpEwo7QLSQEZ4KToz4eyTDS_XoeAQanL2cCD2RkAe0f0/exec";
+
+
+// =======================================
+// OPEN APPLICATION
+// =======================================
+
+function openApp() {
+
+    if (!WEB_APP_URL || WEB_APP_URL.includes("PASTE_")) {
+        alert("Please add your Google Apps Script Web App URL first.");
+        return;
+    }
+
+    document.getElementById("loading").style.display = "block";
+
+    window.location.href = WEB_APP_URL;
+
+}
+
+
+// =======================================
+// FULL SCREEN
+// =======================================
+
+function openFullscreen() {
+
+    if (!WEB_APP_URL || WEB_APP_URL.includes("PASTE_")) {
+        alert("Please add your Google Apps Script Web App URL first.");
+        return;
+    }
+
+    window.open(WEB_APP_URL, "_blank");
+
+}
+
+
+// =======================================
+// HINDI / ENGLISH LANGUAGE
+// =======================================
+
+let hindi = false;
+
+function changeLanguage() {
+
+    hindi = !hindi;
+
+    if (hindi) {
+
+        document.getElementById("title").innerText =
+        "होम्योपैथिक रोगी प्रबंधन प्रणाली";
+
+        document.getElementById("subtitle").innerText =
+        "डिजिटल मरीज रिकॉर्ड एवं प्रबंधन";
+
+        document.getElementById("welcome").innerText =
+        "स्वागत है";
+
+        document.getElementById("description").innerText =
+        "मरीज का पंजीकरण, केस हिस्ट्री, विजिट, फॉलोअप, दवा रिकॉर्ड और जांच रिपोर्ट एक ही जगह प्रबंधित करें।";
+
+        document.getElementById("openBtn").innerText =
+        "पेशेंट मैनेजमेंट सिस्टम खोलें";
+
+        document.getElementById("fullBtn").innerText =
+        "फुल स्क्रीन में खोलें";
+
+        document.getElementById("f1").innerText =
+        "मरीज पंजीकरण";
+
+        document.getElementById("f2").innerText =
+        "केस हिस्ट्री";
+
+        document.getElementById("f3").innerText =
+        "विजिट एवं फॉलोअप";
+
+        document.getElementById("f4").innerText =
+        "दवा रिकॉर्ड";
+
+        document.getElementById("f5").innerText =
+        "जांच रिपोर्ट";
+
+        document.getElementById("f6").innerText =
+        "डैशबोर्ड";
+
+        document.getElementById("footerText").innerText =
+        "होम्योपैथिक रोगी प्रबंधन प्रणाली";
+
+    } else {
+
+        location.reload();
+
+    }
+
+}
+
+</script></body>
+</html>
