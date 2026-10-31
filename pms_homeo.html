@@ -1,331 +1,1181 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Homeopathic Patient Management System</title><meta name="theme-color" content="#087f6e">
-<meta name="description" content="Homeopathic Patient Management System - Hindi and English"><style>
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<title>Homeopathic Patient Management System</title>
+
+<style>
+:root{
+--primary:#087f6e;
+--dark:#00574b;
+--light:#e0f2f1;
+--bg:#f1f7f6;
+--white:#fff;
+--text:#263238;
 }
 
-body {
-    font-family: Arial, sans-serif;
-    background: #f1f7f6;
-    color: #263238;
-    min-height: 100vh;
+*{box-sizing:border-box}
+
+body{
+margin:0;
+font-family:Arial,sans-serif;
+background:var(--bg);
+color:var(--text);
 }
 
-header {
-    background: linear-gradient(135deg, #087f6e, #004d40);
-    color: white;
-    padding: 25px 15px;
-    text-align: center;
+header{
+background:linear-gradient(135deg,#087f6e,#004d40);
+color:white;
+padding:18px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+flex-wrap:wrap;
 }
 
-.logo {
-    font-size: 42px;
-    margin-bottom: 10px;
+header h2{font-size:19px;margin:0}
+
+button{
+cursor:pointer;
+border:0;
+border-radius:7px;
+padding:11px 15px;
 }
 
-header h1 {
-    font-size: 23px;
-    margin-bottom: 8px;
+.lang{
+background:white;
+color:var(--primary);
 }
 
-header p {
-    font-size: 14px;
-    opacity: 0.9;
+.layout{display:flex;min-height:90vh}
+
+.sidebar{
+width:220px;
+background:white;
+padding:12px;
+flex-shrink:0;
 }
 
-.language {
-    text-align: right;
-    padding: 12px 15px;
+.sidebar button{
+width:100%;
+text-align:left;
+margin-bottom:5px;
+background:white;
+color:#455a64;
 }
 
-.language button {
-    border: none;
-    background: #087f6e;
-    color: white;
-    padding: 9px 15px;
-    border-radius: 20px;
-    cursor: pointer;
+.sidebar button.active,
+.sidebar button:hover{
+background:var(--light);
+color:var(--primary);
+font-weight:bold;
 }
 
-.container {
-    max-width: 700px;
-    margin: 25px auto;
-    padding: 15px;
+main{flex:1;padding:20px;min-width:0}
+
+.page{display:none}
+.page.active{display:block}
+
+h2.title{
+color:var(--dark);
+font-size:22px;
+margin-top:0;
 }
 
-.card {
-    background: white;
-    border-radius: 16px;
-    padding: 25px 20px;
-    box-shadow: 0 4px 18px rgba(0,0,0,0.07);
-    text-align: center;
+.cards{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(145px,1fr));
+gap:12px;
 }
 
-.card h2 {
-    color: #087f6e;
-    margin-bottom: 12px;
+.card,.panel{
+background:white;
+padding:18px;
+border-radius:12px;
+box-shadow:0 3px 12px #00000009;
+margin-bottom:15px;
 }
 
-.card p {
-    color: #607d8b;
-    line-height: 1.7;
-    font-size: 14px;
+.card h4{font-size:13px;color:#78909c;margin:0 0 10px}
+.card strong{font-size:27px;color:var(--primary)}
+
+.panel h3{color:var(--dark);margin-top:0}
+
+.form-grid{
+display:grid;
+grid-template-columns:repeat(2,minmax(0,1fr));
+gap:13px;
 }
 
-.main-btn {
-    display: block;
-    width: 100%;
-    padding: 15px;
-    margin-top: 20px;
-    border: none;
-    border-radius: 10px;
-    background: #087f6e;
-    color: white;
-    font-size: 17px;
-    font-weight: bold;
-    cursor: pointer;
-    text-decoration: none;
+.field{
+display:flex;
+flex-direction:column;
+gap:6px;
 }
 
-.main-btn:hover {
-    background: #00574b;
+.full{grid-column:1/-1}
+
+label{font-size:13px;font-weight:bold}
+
+input,select,textarea{
+width:100%;
+padding:11px;
+border:1px solid #cfd8dc;
+border-radius:7px;
+font-size:14px;
+background:white;
 }
 
-.secondary-btn {
-    background: #e0f2f1;
-    color: #00695c;
+textarea{min-height:70px}
+
+.primary{
+background:var(--primary);
+color:white;
+margin-top:15px;
 }
 
-.features {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
-    margin-top: 20px;
+.secondary{
+background:var(--light);
+color:var(--dark);
 }
 
-.feature {
-    background: white;
-    padding: 18px 10px;
-    border-radius: 12px;
-    text-align: center;
-    box-shadow: 0 3px 12px rgba(0,0,0,0.05);
+.table-wrap{
+overflow-x:auto;
+background:white;
+border-radius:9px;
 }
 
-.feature span {
-    font-size: 27px;
+table{
+width:100%;
+border-collapse:collapse;
+min-width:650px;
 }
 
-.feature h3 {
-    font-size: 14px;
-    margin-top: 9px;
-    color: #087f6e;
+td,th{
+padding:12px;
+border-bottom:1px solid #eee;
+text-align:left;
+font-size:13px;
 }
 
-footer {
-    text-align: center;
-    padding: 25px 10px;
-    color: #78909c;
-    font-size: 12px;
+th{background:var(--light);color:var(--dark)}
+
+.search{margin-bottom:12px}
+
+.msg{
+padding:12px;
+margin-bottom:12px;
+border-radius:7px;
+display:none;
 }
 
-#loading {
-    display: none;
-    margin-top: 15px;
-    color: #087f6e;
-    font-size: 14px;
+.success{background:#e8f5e9;color:#2e7d32}
+.error{background:#ffebee;color:#c62828}
+
+.record{
+padding:12px 0;
+border-bottom:1px solid #eee;
+font-size:13px;
 }
 
-@media(max-width:400px) {
-    header h1 {
-        font-size: 19px;
-    }
-
-    .features {
-        grid-template-columns: 1fr 1fr;
-    }
+footer{
+text-align:center;
+padding:20px;
+font-size:12px;
+color:#78909c;
 }
-</style></head><body><header>
-    <div class="logo">⚕️</div>
-    <h1 id="title">Homeopathic Patient Management System</h1>
-    <p id="subtitle">Smart Digital Patient Records & Management</p>
-</header><div class="language">
-    <button onclick="changeLanguage()" id="langBtn">
-        हिंदी / English
-    </button>
-</div><div class="container"><div class="card">
 
-    <h2 id="welcome">Welcome</h2>
+@media(max-width:700px){
+.layout{display:block}
+.sidebar{
+width:100%;
+display:flex;
+overflow-x:auto;
+gap:5px;
+}
+.sidebar button{
+width:auto;
+white-space:nowrap;
+}
+main{padding:12px}
+.form-grid{grid-template-columns:1fr}
+.full{grid-column:auto}
+}
+</style>
+</head>
 
-    <p id="description">
-        Manage patient registration, case history,
-        visits, follow-ups, medication records and
-        investigation reports from one place.
-    </p>
+<body>
 
-    <button class="main-btn" onclick="openApp()" id="openBtn">
-        Open Patient Management System
-    </button>
+<header>
+<h2>⚕️ Homeopathic Patient Management</h2>
+<button class="lang" onclick="toggleLanguage()">हिंदी</button>
+</header>
 
-    <button class="main-btn secondary-btn"
-            onclick="openFullscreen()"
-            id="fullBtn">
-        Open Full Screen
-    </button>
+<div class="layout">
 
-    <div id="loading">
-        Opening application...
-    </div>
+<nav class="sidebar">
+
+<button class="active" onclick="page('dashboard',this)">📊 Dashboard</button>
+<button onclick="page('register',this)">👤 Patient Registration</button>
+<button onclick="page('patients',this)">📋 Patient List</button>
+<button onclick="page('case',this)">📝 Case History</button>
+<button onclick="page('visits',this)">📅 Visits & Follow-up</button>
+<button onclick="page('medicine',this)">💊 Medicine Records</button>
+<button onclick="page('investigations',this)">🧪 Investigations</button>
+
+</nav>
+
+<main>
+
+<div id="message" class="msg"></div>
+
+
+<!-- DASHBOARD -->
+
+<section id="dashboard" class="page active">
+
+<h2 class="title">Dashboard</h2>
+
+<div class="cards">
+
+<div class="card">
+<h4>Total Patients</h4>
+<strong id="totalPatients">0</strong>
+</div>
+
+<div class="card">
+<h4>Active Patients</h4>
+<strong id="activePatients">0</strong>
+</div>
+
+<div class="card">
+<h4>Total Visits</h4>
+<strong id="totalVisits">0</strong>
+</div>
+
+<div class="card">
+<h4>Today's Visits</h4>
+<strong id="todayVisits">0</strong>
+</div>
+
+<div class="card">
+<h4>Medicine Records</h4>
+<strong id="totalMedicines">0</strong>
+</div>
 
 </div>
 
-<div class="features">
+<div class="panel">
+<h3>Welcome</h3>
+<p>Homeopathic Patient Management System</p>
+<p>Manage patient registration, case history, visits, follow-ups and investigation records.</p>
+<button class="primary" onclick="dashboard()">Refresh Dashboard</button>
+</div>
 
-    <div class="feature">
-        <span>👨‍⚕️</span>
-        <h3 id="f1">Patient Registration</h3>
-    </div>
+</section>
 
-    <div class="feature">
-        <span>📋</span>
-        <h3 id="f2">Case History</h3>
-    </div>
 
-    <div class="feature">
-        <span>📅</span>
-        <h3 id="f3">Visits & Follow-up</h3>
-    </div>
+<!-- PATIENT REGISTRATION -->
 
-    <div class="feature">
-        <span>💊</span>
-        <h3 id="f4">Medicine Records</h3>
-    </div>
+<section id="register" class="page">
 
-    <div class="feature">
-        <span>🧪</span>
-        <h3 id="f5">Investigations</h3>
-    </div>
+<h2 class="title">Patient Registration</h2>
 
-    <div class="feature">
-        <span>📊</span>
-        <h3 id="f6">Dashboard</h3>
-    </div>
+<div class="panel">
+
+<form id="patientForm">
+
+<div class="form-grid">
+
+<div class="field">
+<label>Patient Name *</label>
+<input name="Patient_Name" required>
+</div>
+
+<div class="field">
+<label>Age</label>
+<input name="Age" type="number" min="0">
+</div>
+
+<div class="field">
+<label>Gender</label>
+<select name="Gender">
+<option value="">Select</option>
+<option>Male</option>
+<option>Female</option>
+<option>Other</option>
+</select>
+</div>
+
+<div class="field">
+<label>Mobile</label>
+<input name="Mobile" type="tel">
+</div>
+
+<div class="field">
+<label>Address</label>
+<textarea name="Address"></textarea>
+</div>
+
+<div class="field">
+<label>Occupation</label>
+<input name="Occupation">
+</div>
+
+<div class="field">
+<label>Blood Group</label>
+<select name="Blood_Group">
+<option value="">Select</option>
+<option>A+</option><option>A-</option>
+<option>B+</option><option>B-</option>
+<option>O+</option><option>O-</option>
+<option>AB+</option><option>AB-</option>
+</select>
+</div>
+
+<div class="field">
+<label>Emergency Contact</label>
+<input name="Emergency_Contact">
+</div>
+
+<div class="field full">
+<label>Medical Notes</label>
+<textarea name="Medical_Notes"></textarea>
+</div>
 
 </div>
 
-</div><footer>
-    <p id="footerText">
-        Homeopathic Patient Management System
-    </p>
-    <p>Private Patient Records | Hindi + English</p>
-</footer><script>
+<button class="primary">Save Patient</button>
 
-// =======================================
-// GOOGLE APPS SCRIPT WEB APP URL
-// =======================================
-
-// यहाँ अपना deployed Web App URL डालें.
-// URL का अंत /exec से होना चाहिए.
-
-const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbw6wpGfWkIK9UaJGW5KMTFEVrdkzsiEhif2ZzKqq_Nkh0hTyk_UhuJ02j7CcPbh1PUz/exec";
+</form>
+</div>
+</section>
 
 
-// =======================================
-// OPEN APPLICATION
-// =======================================
+<!-- PATIENT LIST -->
 
-function openApp() {
+<section id="patients" class="page">
 
-    if (!WEB_APP_URL || WEB_APP_URL.includes("PASTE_")) {
-        alert("Please add your Google Apps Script Web App URL first.");
-        return;
-    }
+<h2 class="title">Patient List</h2>
 
-    document.getElementById("loading").style.display = "block";
+<div class="panel">
 
-    window.location.href = WEB_APP_URL;
+<input class="search" id="search" placeholder="Search patient name, ID or mobile" oninput="loadPatients()">
+
+<div class="table-wrap">
+
+<table>
+<thead>
+<tr>
+<th>Patient ID</th>
+<th>Name</th>
+<th>Age</th>
+<th>Gender</th>
+<th>Mobile</th>
+<th>Action</th>
+</tr>
+</thead>
+
+<tbody id="patientTable"></tbody>
+</table>
+
+</div>
+</div>
+</section>
+
+
+<!-- CASE HISTORY -->
+
+<section id="case" class="page">
+
+<h2 class="title">Case History</h2>
+
+<div class="panel">
+
+<form id="caseForm">
+
+<div class="form-grid">
+
+<div class="field full">
+<label>Select Patient</label>
+<select name="Patient_ID" class="patientSelect" required></select>
+</div>
+
+<div class="field">
+<label>Chief Complaint</label>
+<textarea name="Chief_Complaint"></textarea>
+</div>
+
+<div class="field">
+<label>Complaint Duration</label>
+<input name="Complaint_Duration">
+</div>
+
+<div class="field">
+<label>Mental Symptoms</label>
+<textarea name="Mental_Symptoms"></textarea>
+</div>
+
+<div class="field">
+<label>Physical Symptoms</label>
+<textarea name="Physical_Symptoms"></textarea>
+</div>
+
+<div class="field">
+<label>Past History</label>
+<textarea name="Past_History"></textarea>
+</div>
+
+<div class="field">
+<label>Family History</label>
+<textarea name="Family_History"></textarea>
+</div>
+
+<div class="field">
+<label>Personal History</label>
+<textarea name="Personal_History"></textarea>
+</div>
+
+<div class="field">
+<label>Allergies</label>
+<textarea name="Allergies"></textarea>
+</div>
+
+<div class="field full">
+<label>Other Notes</label>
+<textarea name="Other_Notes"></textarea>
+</div>
+
+</div>
+
+<button class="primary">Save Case History</button>
+</form>
+</div>
+
+<div class="panel">
+<h3>Previous Case History</h3>
+<div id="caseRecords">Select a patient.</div>
+</div>
+
+</section>
+
+
+<!-- VISITS -->
+
+<section id="visits" class="page">
+
+<h2 class="title">Visits & Follow-up</h2>
+
+<div class="panel">
+
+<form id="visitForm">
+
+<div class="form-grid">
+
+<div class="field full">
+<label>Select Patient</label>
+<select name="Patient_ID" class="patientSelect" required></select>
+</div>
+
+<div class="field">
+<label>Visit Date</label>
+<input name="Visit_Date" type="date" id="visitDate">
+</div>
+
+<div class="field">
+<label>Follow-up Date</label>
+<input name="Followup_Date" type="date">
+</div>
+
+<div class="field">
+<label>Symptoms</label>
+<textarea name="Symptoms"></textarea>
+</div>
+
+<div class="field">
+<label>Patient Condition</label>
+<select name="Patient_Condition">
+<option value="">Select</option>
+<option>Improved</option>
+<option>Unchanged</option>
+<option>Worsened</option>
+<option>Not Assessed</option>
+</select>
+</div>
+
+<div class="field full">
+<label>Notes</label>
+<textarea name="Notes"></textarea>
+</div>
+
+</div>
+
+<button class="primary">Save Visit</button>
+</form>
+</div>
+
+<div class="panel">
+<h3>Visit History</h3>
+<div id="visitRecords">Select a patient.</div>
+</div>
+
+</section>
+
+
+<!-- MEDICINES -->
+
+<section id="medicine" class="page">
+
+<h2 class="title">Medicine Records</h2>
+
+<div class="panel">
+
+<form id="medicineForm">
+
+<div class="form-grid">
+
+<div class="field full">
+<label>Select Patient</label>
+<select name="Patient_ID" class="patientSelect" required></select>
+</div>
+
+<div class="field">
+<label>Medicine Name</label>
+<input name="Medicine_Name">
+</div>
+
+<div class="field">
+<label>Potency</label>
+<input name="Potency">
+</div>
+
+<div class="field">
+<label>Dosage</label>
+<input name="Dosage">
+</div>
+
+<div class="field">
+<label>Frequency</label>
+<input name="Frequency">
+</div>
+
+<div class="field">
+<label>Duration</label>
+<input name="Duration">
+</div>
+
+<div class="field full">
+<label>Notes</label>
+<textarea name="Notes"></textarea>
+</div>
+
+</div>
+
+<button class="primary">Save Medicine Record</button>
+</form>
+</div>
+
+<div class="panel">
+<h3>Medicine History</h3>
+<div id="medicineRecords">Select a patient.</div>
+</div>
+
+</section>
+
+
+<!-- INVESTIGATIONS -->
+
+<section id="investigations" class="page">
+
+<h2 class="title">Investigations</h2>
+
+<div class="panel">
+
+<form id="investigationForm">
+
+<div class="form-grid">
+
+<div class="field full">
+<label>Select Patient</label>
+<select name="Patient_ID" class="patientSelect" required></select>
+</div>
+
+<div class="field">
+<label>Investigation Name</label>
+<input name="Investigation_Name">
+</div>
+
+<div class="field">
+<label>Test Date</label>
+<input name="Test_Date" type="date">
+</div>
+
+<div class="field">
+<label>Result</label>
+<textarea name="Result"></textarea>
+</div>
+
+<div class="field">
+<label>Report Notes</label>
+<textarea name="Report_Notes"></textarea>
+</div>
+
+</div>
+
+<button class="primary">Save Investigation</button>
+</form>
+</div>
+
+<div class="panel">
+<h3>Investigation History</h3>
+<div id="investigationRecords">Select a patient.</div>
+</div>
+
+</section>
+
+</main>
+</div>
+
+<footer>
+Homeopathic Patient Management System | Hindi + English
+</footer>
+
+
+<script>
+
+// ==========================================
+// GOOGLE APPS SCRIPT API URL
+// ==========================================
+
+const API_URL = "https://script.google.com/macros/s/AKfycbzDr6FopBQ8ZlButaibHcahbCwOth82JJskMn5T-uK0lBW5DVOIFaX4paKYdm3gobkm/exec";
+
+
+// ==========================================
+// JSONP API CALL
+// ==========================================
+
+function api(action,data={}) {
+
+return new Promise((resolve,reject)=>{
+
+if(!API_URL || API_URL.includes("PASTE_")){
+reject(new Error("Apps Script API URL is missing"));
+return;
+}
+
+const callback =
+"jsonp_" + Date.now() + "_" + Math.floor(Math.random()*100000);
+
+const script = document.createElement("script");
+
+const timeout = setTimeout(()=>{
+
+delete window[callback];
+script.remove();
+
+reject(new Error("API timeout. Check deployment and Google login."));
+
+},20000);
+
+window[callback] = function(response){
+
+clearTimeout(timeout);
+
+delete window[callback];
+script.remove();
+
+resolve(response);
+
+};
+
+const params = new URLSearchParams();
+
+params.set("action",action);
+params.set("data",JSON.stringify(data));
+params.set("callback",callback);
+
+script.src = API_URL + "?" + params.toString();
+
+script.onerror = function(){
+
+clearTimeout(timeout);
+
+delete window[callback];
+script.remove();
+
+reject(new Error("Could not connect to Apps Script"));
+
+};
+
+document.body.appendChild(script);
+
+});
 
 }
 
 
-// =======================================
-// FULL SCREEN
-// =======================================
+// ==========================================
+// GLOBAL HELPERS
+// ==========================================
 
-function openFullscreen() {
+let patients=[];
 
-    if (!WEB_APP_URL || WEB_APP_URL.includes("PASTE_")) {
-        alert("Please add your Google Apps Script Web App URL first.");
-        return;
-    }
+function msg(text,type="success"){
 
-    window.open(WEB_APP_URL, "_blank");
+const box=document.getElementById("message");
+
+box.textContent=text;
+box.className="msg "+type;
+box.style.display="block";
+
+setTimeout(()=>{
+box.style.display="none";
+},5000);
+
+}
+
+function esc(value){
+
+return String(value??"").replace(/[&<>"']/g,c=>({
+"&":"&amp;",
+"<":"&lt;",
+">":"&gt;",
+'"':"&quot;",
+"'":"&#39;"
+}[c]));
+
+}
+
+function page(id,button){
+
+document.querySelectorAll(".page").forEach(p=>{
+p.classList.remove("active");
+});
+
+document.getElementById(id).classList.add("active");
+
+document.querySelectorAll(".sidebar button").forEach(b=>{
+b.classList.remove("active");
+});
+
+button.classList.add("active");
+
+if(id==="dashboard") dashboard();
+
+if(id==="patients") loadPatients();
+
+if(["case","visits","medicine","investigations"].includes(id)){
+loadPatients();
+}
 
 }
 
 
-// =======================================
-// HINDI / ENGLISH LANGUAGE
-// =======================================
+// ==========================================
+// DASHBOARD
+// ==========================================
 
-let hindi = false;
+async function dashboard(){
 
-function changeLanguage() {
+try{
 
-    hindi = !hindi;
+const d=await api("dashboard");
 
-    if (hindi) {
+if(!d.success) throw new Error(d.message);
 
-        document.getElementById("title").innerText =
-        "होम्योपैथिक रोगी प्रबंधन प्रणाली";
+document.getElementById("totalPatients").textContent=d.totalPatients;
+document.getElementById("activePatients").textContent=d.activePatients;
+document.getElementById("totalVisits").textContent=d.totalVisits;
+document.getElementById("todayVisits").textContent=d.todayVisits;
+document.getElementById("totalMedicines").textContent=d.totalMedicineRecords;
 
-        document.getElementById("subtitle").innerText =
-        "डिजिटल मरीज रिकॉर्ड एवं प्रबंधन";
+}catch(e){
 
-        document.getElementById("welcome").innerText =
-        "स्वागत है";
-
-        document.getElementById("description").innerText =
-        "मरीज का पंजीकरण, केस हिस्ट्री, विजिट, फॉलोअप, दवा रिकॉर्ड और जांच रिपोर्ट एक ही जगह प्रबंधित करें।";
-
-        document.getElementById("openBtn").innerText =
-        "पेशेंट मैनेजमेंट सिस्टम खोलें";
-
-        document.getElementById("fullBtn").innerText =
-        "फुल स्क्रीन में खोलें";
-
-        document.getElementById("f1").innerText =
-        "मरीज पंजीकरण";
-
-        document.getElementById("f2").innerText =
-        "केस हिस्ट्री";
-
-        document.getElementById("f3").innerText =
-        "विजिट एवं फॉलोअप";
-
-        document.getElementById("f4").innerText =
-        "दवा रिकॉर्ड";
-
-        document.getElementById("f5").innerText =
-        "जांच रिपोर्ट";
-
-        document.getElementById("f6").innerText =
-        "डैशबोर्ड";
-
-        document.getElementById("footerText").innerText =
-        "होम्योपैथिक रोगी प्रबंधन प्रणाली";
-
-    } else {
-
-        location.reload();
-
-    }
+msg(e.message,"error");
 
 }
 
-</script></body>
+}
+
+
+// ==========================================
+// PATIENT REGISTRATION
+// ==========================================
+
+document.getElementById("patientForm").onsubmit=async function(e){
+
+e.preventDefault();
+
+const data=Object.fromEntries(new FormData(this));
+
+try{
+
+const r=await api("savePatient",data);
+
+if(!r.success) throw new Error(r.message);
+
+msg("Patient saved. Patient ID: "+r.patientId);
+
+this.reset();
+
+await loadPatients();
+await dashboard();
+
+}catch(error){
+
+msg(error.message,"error");
+
+}
+
+};
+
+
+// ==========================================
+// LOAD PATIENTS
+// ==========================================
+
+async function loadPatients(){
+
+try{
+
+const search=document.getElementById("search").value;
+
+const r=await api("getPatients",{search});
+
+if(!r.success) throw new Error(r.message);
+
+patients=r.data||[];
+
+renderPatients();
+fillPatientDropdowns();
+
+}catch(e){
+
+msg(e.message,"error");
+
+}
+
+}
+
+
+// ==========================================
+// RENDER PATIENT TABLE
+// ==========================================
+
+function renderPatients(){
+
+const tbody=document.getElementById("patientTable");
+
+tbody.innerHTML="";
+
+if(!patients.length){
+
+tbody.innerHTML="<tr><td colspan='6'>No patients found</td></tr>";
+
+return;
+
+}
+
+patients.forEach(p=>{
+
+const tr=document.createElement("tr");
+
+tr.innerHTML=`
+<td>${esc(p.Patient_ID)}</td>
+<td>${esc(p.Patient_Name)}</td>
+<td>${esc(p.Age)}</td>
+<td>${esc(p.Gender)}</td>
+<td>${esc(p.Mobile)}</td>
+<td><button class="secondary" onclick="viewPatient('${esc(p.Patient_ID)}')">View</button></td>
+`;
+
+tbody.appendChild(tr);
+
+});
+
+}
+
+
+// ==========================================
+// PATIENT DROPDOWNS
+// ==========================================
+
+function fillPatientDropdowns(){
+
+document.querySelectorAll(".patientSelect").forEach(select=>{
+
+const old=select.value;
+
+select.innerHTML="<option value=''>Select Patient</option>";
+
+patients.forEach(p=>{
+
+const option=document.createElement("option");
+
+option.value=p.Patient_ID;
+
+option.textContent=p.Patient_Name+" ("+p.Patient_ID+")";
+
+select.appendChild(option);
+
+});
+
+select.value=old;
+
+});
+
+}
+
+
+// ==========================================
+// VIEW PATIENT
+// ==========================================
+
+async function viewPatient(id){
+
+try{
+
+const r=await api("getPatient",{patientId:id});
+
+if(!r.success) throw new Error("Patient not found");
+
+const p=r.data;
+
+alert(
+"Patient ID: "+p.Patient_ID+
+"\nName: "+p.Patient_Name+
+"\nAge: "+p.Age+
+"\nGender: "+p.Gender+
+"\nMobile: "+p.Mobile+
+"\nAddress: "+p.Address
+);
+
+}catch(e){
+
+msg(e.message,"error");
+
+}
+
+}
+
+
+// ==========================================
+// FORM HANDLER
+// ==========================================
+
+async function saveForm(formId,action,message,recordAction,recordBox){
+
+document.getElementById(formId).onsubmit=async function(e){
+
+e.preventDefault();
+
+const data=Object.fromEntries(new FormData(this));
+
+try{
+
+const result=await api(action,data);
+
+if(!result.success) throw new Error(result.message);
+
+msg(message);
+
+this.reset();
+
+if(recordAction){
+await loadRecords(recordAction,data.Patient_ID,recordBox);
+}
+
+if(action==="saveVisit" || action==="saveMedicine"){
+dashboard();
+}
+
+};
+
+}
+
+
+// ==========================================
+// SAVE FORMS
+// ==========================================
+
+saveForm(
+"caseForm",
+"saveCaseHistory",
+"Case history saved successfully",
+"getCaseHistory",
+"caseRecords"
+);
+
+saveForm(
+"visitForm",
+"saveVisit",
+"Visit saved successfully",
+"getVisits",
+"visitRecords"
+);
+
+saveForm(
+"medicineForm",
+"saveMedicine",
+"Medicine record saved successfully",
+"getMedicines",
+"medicineRecords"
+);
+
+saveForm(
+"investigationForm",
+"saveInvestigation",
+"Investigation saved successfully",
+"getInvestigations",
+"investigationRecords"
+);
+
+
+// ==========================================
+// LOAD RECORDS
+// ==========================================
+
+async function loadRecords(action,id,elementId){
+
+const box=document.getElementById(elementId);
+
+if(!id){
+
+box.textContent="Select a patient.";
+
+return;
+
+}
+
+box.textContent="Loading...";
+
+try{
+
+const r=await api(action,{patientId:id});
+
+if(!r.success) throw new Error(r.message);
+
+box.innerHTML="";
+
+if(!r.data.length){
+
+box.textContent="No records found.";
+
+return;
+
+}
+
+r.data.forEach(record=>{
+
+const div=document.createElement("div");
+
+div.className="record";
+
+Object.keys(record).forEach(key=>{
+
+if([
+"Patient_ID",
+"Record_ID",
+"Visit_ID",
+"Medicine_ID",
+"Investigation_ID"
+].includes(key)) return;
+
+if(!record[key]) return;
+
+const line=document.createElement("div");
+
+const strong=document.createElement("strong");
+
+strong.textContent=key.replace(/_/g," ")+": ";
+
+line.appendChild(strong);
+
+line.appendChild(document.createTextNode(record[key]));
+
+div.appendChild(line);
+
+});
+
+box.appendChild(div);
+
+});
+
+}catch(e){
+
+box.textContent=e.message;
+
+}
+
+}
+
+
+// ==========================================
+// PATIENT SELECT EVENTS
+// ==========================================
+
+document.querySelectorAll(".patientSelect").forEach(select=>{
+
+select.addEventListener("change",function(){
+
+const id=this.value;
+
+const section=this.closest(".page");
+
+const pageId=section.id;
+
+const map={
+case:["getCaseHistory","caseRecords"],
+visits:["getVisits","visitRecords"],
+medicine:["getMedicines","medicineRecords"],
+investigations:["getInvestigations","investigationRecords"]
+};
+
+if(map[pageId]){
+
+loadRecords(map[pageId][0],id,map[pageId][1]);
+
+}
+
+});
+
+});
+
+
+// ==========================================
+// LANGUAGE BUTTON
+// ==========================================
+
+function toggleLanguage(){
+
+alert(
+"हिंदी/English भाषा विकल्प अभी केवल आंशिक है। मुख्य रिकॉर्ड और फॉर्म अंग्रेजी में दिखेंगे।"
+);
+
+}
+
+
+// ==========================================
+// INITIAL LOAD
+// ==========================================
+
+window.addEventListener("load",function(){
+
+const d=new Date();
+
+document.getElementById("visitDate").value=
+new Date(d.getTime()-d.getTimezoneOffset()*60000)
+.toISOString().slice(0,10);
+
+dashboard();
+
+loadPatients();
+
+});
+
+</script>
+
+</body>
 </html>
