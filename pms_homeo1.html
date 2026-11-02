@@ -1,0 +1,813 @@
+<!DOCTYPE html><html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#087f6e">
+<title>Homeopathic Patient Management System</title><style>
+:root{
+--primary:#087f6e;--dark:#00574b;--light:#e0f2f1;
+--bg:#f1f7f6;--white:#fff;--text:#263238;
+--danger:#c62828;--shadow:0 3px 12px #0000000b;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:var(--bg);color:var(--text)}
+header{
+background:linear-gradient(135deg,#087f6e,#004d40);
+color:white;padding:16px;display:flex;justify-content:space-between;
+align-items:center;flex-wrap:wrap;gap:10px
+}
+header h2{font-size:19px;margin:0}
+button{cursor:pointer;border:0;border-radius:7px;padding:10px 14px;font-size:14px}
+button:disabled{opacity:.6;cursor:not-allowed}
+.lang{background:white;color:var(--primary)}
+.layout{display:flex;min-height:88vh}
+.sidebar{width:225px;background:white;padding:12px;flex-shrink:0}
+.sidebar button{
+width:100%;text-align:left;margin-bottom:6px;background:white;
+color:#455a64
+}
+.sidebar button.active,.sidebar button:hover{
+background:var(--light);color:var(--primary);font-weight:bold
+}
+main{flex:1;padding:20px;min-width:0}
+.page{display:none}
+.page.active{display:block}
+h2.title{color:var(--dark);font-size:22px;margin-top:0}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:12px}
+.card,.panel{
+background:white;padding:18px;border-radius:12px;
+box-shadow:var(--shadow);margin-bottom:15px
+}
+.card h4{font-size:13px;color:#78909c;margin:0 0 10px}
+.card strong{font-size:27px;color:var(--primary)}
+.panel h3{color:var(--dark);margin-top:0}
+.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}
+.field{display:flex;flex-direction:column;gap:6px}
+.full{grid-column:1/-1}
+label{font-size:13px;font-weight:bold}
+input,select,textarea{
+width:100%;padding:11px;border:1px solid #cfd8dc;
+border-radius:7px;font-size:14px;background:white;font-family:inherit
+}
+textarea{min-height:70px;resize:vertical}
+.primary{background:var(--primary);color:white;margin-top:12px}
+.primary:hover{background:var(--dark)}
+.secondary{background:var(--light);color:var(--dark)}
+.danger{background:#ffebee;color:var(--danger)}
+.toolbar{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.toolbar button{margin:0}
+.table-wrap{overflow-x:auto;background:white;border-radius:9px}
+table{width:100%;border-collapse:collapse;min-width:650px}
+td,th{padding:12px;border-bottom:1px solid #eee;text-align:left;font-size:13px}
+th{background:var(--light);color:var(--dark)}
+.search{margin-bottom:10px}
+.msg{padding:12px;margin-bottom:12px;border-radius:7px;display:none;overflow-wrap:anywhere}
+.success{background:#e8f5e9;color:#2e7d32}
+.error{background:#ffebee;color:#c62828}
+.loading,.empty{color:#78909c;padding:12px 0}
+.record{padding:12px 0;border-bottom:1px solid #eee;font-size:13px;overflow-wrap:anywhere}
+.record strong{color:var(--dark)}
+.status{display:inline-block;padding:5px 9px;border-radius:20px;background:#e8f5e9;color:#2e7d32;font-size:12px}
+footer{text-align:center;padding:20px;font-size:12px;color:#78909c}
+.action-btn{padding:7px 10px;margin:2px}
+.small{font-size:12px;color:#78909c}
+.report-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
+.stat{padding:14px;background:#f1f7f6;border-radius:8px}
+.stat b{display:block;font-size:22px;color:var(--primary);margin-top:6px}
+.modal{
+display:none;position:fixed;inset:0;background:#0008;z-index:100;
+padding:15px;overflow:auto
+}
+.modal-box{
+background:white;max-width:650px;margin:30px auto;padding:20px;
+border-radius:12px;max-height:90vh;overflow:auto
+}
+.modal-head{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.id-card{
+width:100%;max-width:420px;margin:15px auto;border:2px solid var(--primary);
+border-radius:12px;overflow:hidden;background:white
+}
+.id-head{background:var(--primary);color:white;padding:18px;text-align:center}
+.id-body{padding:18px;line-height:1.8}
+.id-footer{background:var(--light);padding:10px;text-align:center;font-size:12px}
+@media(max-width:700px){
+.layout{display:block}
+.sidebar{
+width:100%;display:flex;overflow-x:auto;gap:5px;
+position:sticky;top:0;z-index:10;padding:7px
+}
+.sidebar button{width:auto;white-space:nowrap;flex-shrink:0;font-size:12px}
+main{padding:12px}
+.form-grid{grid-template-columns:1fr}
+.full{grid-column:auto}
+header h2{font-size:16px}
+}
+@media print{
+body{background:white}
+header,.sidebar,footer,.no-print,.msg{display:none!important}
+.layout,main{display:block;padding:0;margin:0}
+.page{display:none!important}
+#dashboard{display:none!important}
+#printArea{display:block!important}
+}
+</style></head><body>
+<header>
+<h2>⚕️ <span data-i18n="appTitle">Homeopathic Patient Management System</span></h2>
+<button class="lang" type="button" onclick="toggleLanguage()">हिंदी / English</button>
+</header><div class="layout">
+<nav class="sidebar no-print">
+<button class="active" onclick="page('dashboard',this)">📊 <span data-i18n="dashboard">Dashboard</span></button>
+<button onclick="page('register',this)">👤 <span data-i18n="registration">Patient Registration</span></button>
+<button onclick="page('patients',this)">📋 <span data-i18n="patientList">Patient List</span></button>
+<button onclick="page('case',this)">📝 <span data-i18n="caseHistory">Case History</span></button>
+<button onclick="page('visits',this)">📅 <span data-i18n="visits">Visits & Follow-up</span></button>
+<button onclick="page('medicine',this)">💊 <span data-i18n="medicines">Medicine Records</span></button>
+<button onclick="page('investigations',this)">🧪 <span data-i18n="investigations">Investigations</span></button>
+<button onclick="page('reports',this)">📈 <span data-i18n="reports">Reports</span></button>
+</nav><main>
+<div id="message" class="msg" role="status" aria-live="polite"></div><section id="dashboard" class="page active">
+<h2 class="title" data-i18n="dashboard">Dashboard</h2>
+<div class="cards">
+<div class="card"><h4 data-i18n="totalPatients">Total Patients</h4><strong id="totalPatients">0</strong></div>
+<div class="card"><h4 data-i18n="activePatients">Active Patients</h4><strong id="activePatients">0</strong></div>
+<div class="card"><h4 data-i18n="totalVisits">Total Visits</h4><strong id="totalVisits">0</strong></div>
+<div class="card"><h4 data-i18n="todayVisits">Today's Visits</h4><strong id="todayVisits">0</strong></div>
+<div class="card"><h4 data-i18n="totalMedicines">Medicine Records</h4><strong id="totalMedicines">0</strong></div>
+</div>
+<div class="panel">
+<h3 data-i18n="welcome">Welcome</h3>
+<p>Homeopathic Patient Management System</p>
+<p data-i18n="welcomeText">Manage patient registration, case history, visits, medicines and investigations.</p>
+<div class="toolbar">
+<button class="primary" onclick="dashboard()" data-i18n="refresh">Refresh Dashboard</button>
+<button class="secondary" onclick="page('patients',document.querySelectorAll('.sidebar button')[2])" data-i18n="viewPatients">View Patients</button>
+</div>
+<p id="connectionStatus" class="status">Checking connection...</p>
+</div>
+</section><section id="register" class="page">
+<h2 class="title" data-i18n="registration">Patient Registration</h2>
+<div class="panel">
+<form id="patientForm">
+<div class="form-grid">
+<div class="field"><label data-i18n="patientName">Patient Name *</label><input name="Patient_Name" required maxlength="150"></div>
+<div class="field"><label data-i18n="age">Age</label><input name="Age" type="number" min="0" max="130"></div>
+<div class="field"><label data-i18n="gender">Gender</label><select name="Gender"><option value="">Select</option><option>Male</option><option>Female</option><option>Other</option></select></div>
+<div class="field"><label data-i18n="mobile">Mobile</label><input name="Mobile" type="tel" maxlength="20"></div>
+<div class="field"><label data-i18n="address">Address</label><textarea name="Address"></textarea></div>
+<div class="field"><label data-i18n="occupation">Occupation</label><input name="Occupation"></div>
+<div class="field"><label data-i18n="bloodGroup">Blood Group</label><select name="Blood_Group"><option value="">Select</option><option>A+</option><option>A-</option><option>B+</option><option>B-</option><option>O+</option><option>O-</option><option>AB+</option><option>AB-</option></select></div>
+<div class="field"><label data-i18n="emergencyContact">Emergency Contact</label><input name="Emergency_Contact" type="tel"></div>
+<div class="field full"><label data-i18n="medicalNotes">Medical Notes</label><textarea name="Medical_Notes"></textarea></div>
+</div>
+<button class="primary" type="submit" data-i18n="savePatient">Save Patient</button>
+</form>
+</div>
+</section><section id="patients" class="page">
+<h2 class="title" data-i18n="patientList">Patient List</h2>
+<div class="panel">
+<div class="toolbar">
+<input class="search" id="search" placeholder="Search name, ID or mobile" style="flex:1;min-width:180px">
+<select id="sortPatients" style="width:auto">
+<option value="name">Sort: Name</option>
+<option value="id">Sort: Patient ID</option>
+<option value="age">Sort: Age</option>
+</select>
+<button class="secondary" onclick="loadPatients()" data-i18n="refresh">Refresh</button>
+</div>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Patient ID</th><th>Name</th><th>Age</th><th>Gender</th><th>Mobile</th><th>Actions</th></tr></thead>
+<tbody id="patientTable"><tr><td colspan="6">Loading...</td></tr></tbody>
+</table>
+</div>
+</div>
+</section><section id="case" class="page">
+<h2 class="title" data-i18n="caseHistory">Case History</h2>
+<div class="panel">
+<form id="caseForm">
+<div class="form-grid">
+<div class="field full"><label>Select Patient *</label><select name="Patient_ID" class="patientSelect" required><option value="">Select Patient</option></select></div>
+<div class="field"><label>Chief Complaint</label><textarea name="Chief_Complaint"></textarea></div>
+<div class="field"><label>Complaint Duration</label><input name="Complaint_Duration"></div>
+<div class="field"><label>Mental Symptoms</label><textarea name="Mental_Symptoms"></textarea></div>
+<div class="field"><label>Physical Symptoms</label><textarea name="Physical_Symptoms"></textarea></div>
+<div class="field"><label>Past History</label><textarea name="Past_History"></textarea></div>
+<div class="field"><label>Family History</label><textarea name="Family_History"></textarea></div>
+<div class="field"><label>Personal History</label><textarea name="Personal_History"></textarea></div>
+<div class="field"><label>Allergies</label><textarea name="Allergies"></textarea></div>
+<div class="field full"><label>Other Notes</label><textarea name="Other_Notes"></textarea></div>
+</div>
+<button class="primary" type="submit">Save Case History</button>
+</form>
+</div>
+<div class="panel"><h3>Previous Case History</h3><div id="caseRecords" class="empty">Select a patient.</div></div>
+</section><section id="visits" class="page">
+<h2 class="title" data-i18n="visits">Visits & Follow-up</h2>
+<div class="panel">
+<form id="visitForm">
+<div class="form-grid">
+<div class="field full"><label>Select Patient *</label><select name="Patient_ID" class="patientSelect" required><option value="">Select Patient</option></select></div>
+<div class="field"><label>Visit Date</label><input name="Visit_Date" type="date" id="visitDate"></div>
+<div class="field"><label>Follow-up Date</label><input name="Followup_Date" type="date"></div>
+<div class="field"><label>Symptoms</label><textarea name="Symptoms"></textarea></div>
+<div class="field"><label>Patient Condition</label><select name="Patient_Condition"><option value="">Select</option><option>Improved</option><option>Unchanged</option><option>Worsened</option><option>Not Assessed</option></select></div>
+<div class="field full"><label>Notes</label><textarea name="Notes"></textarea></div>
+</div>
+<button class="primary" type="submit">Save Visit</button>
+</form>
+</div>
+<div class="panel"><h3>Visit History</h3><div id="visitRecords" class="empty">Select a patient.</div></div>
+</section><section id="medicine" class="page">
+<h2 class="title" data-i18n="medicines">Medicine Records</h2>
+<div class="panel">
+<form id="medicineForm">
+<div class="form-grid">
+<div class="field full"><label>Select Patient *</label><select name="Patient_ID" class="patientSelect" required><option value="">Select Patient</option></select></div>
+<div class="field"><label>Medicine Name</label><input name="Medicine_Name"></div>
+<div class="field"><label>Potency</label><input name="Potency"></div>
+<div class="field"><label>Dosage</label><input name="Dosage"></div>
+<div class="field"><label>Frequency</label><input name="Frequency"></div>
+<div class="field"><label>Duration</label><input name="Duration"></div>
+<div class="field full"><label>Notes</label><textarea name="Notes"></textarea></div>
+</div>
+<button class="primary" type="submit">Save Medicine Record</button>
+</form>
+</div>
+<div class="panel">
+<h3>Medicine History</h3>
+<div class="toolbar"><button class="secondary" onclick="printPrescription()" type="button">Print Prescription</button></div>
+<div id="medicineRecords" class="empty">Select a patient.</div>
+</div>
+</section><section id="investigations" class="page">
+<h2 class="title" data-i18n="investigations">Investigations</h2>
+<div class="panel">
+<form id="investigationForm">
+<div class="form-grid">
+<div class="field full"><label>Select Patient *</label><select name="Patient_ID" class="patientSelect" required><option value="">Select Patient</option></select></div>
+<div class="field"><label>Investigation Name</label><input name="Investigation_Name"></div>
+<div class="field"><label>Test Date</label><input name="Test_Date" type="date"></div>
+<div class="field"><label>Result</label><textarea name="Result"></textarea></div>
+<div class="field"><label>Report Notes</label><textarea name="Report_Notes"></textarea></div>
+</div>
+<button class="primary" type="submit">Save Investigation</button>
+</form>
+</div>
+<div class="panel"><h3>Investigation History</h3><div id="investigationRecords" class="empty">Select a patient.</div></div>
+</section><section id="reports" class="page">
+<h2 class="title" data-i18n="reports">Reports</h2>
+<div class="panel">
+<h3>Patient Report</h3>
+<div class="toolbar">
+<select id="reportPatient" class="patientSelect" style="min-width:220px;flex:1"><option value="">Select Patient</option></select>
+<button class="primary" onclick="generatePatientReport()">Generate Report</button>
+</div>
+<div id="patientReport" class="empty">Select a patient to generate a report.</div>
+</div>
+<div class="panel">
+<h3>Monthly / Yearly Summary</h3>
+<p class="small">Summary is calculated from records returned by the existing API. No new data is written.</p>
+<div class="toolbar">
+<select id="reportYear"></select>
+<select id="reportMonth">
+<option value="all">All Months</option>
+<option value="01">January</option><option value="02">February</option>
+<option value="03">March</option><option value="04">April</option>
+<option value="05">May</option><option value="06">June</option>
+<option value="07">July</option><option value="08">August</option>
+<option value="09">September</option><option value="10">October</option>
+<option value="11">November</option><option value="12">December</option>
+</select>
+<button class="primary" onclick="generateSummary()">Generate Summary</button>
+</div>
+<div id="summaryReport" class="empty">Choose a year and generate the summary.</div>
+</div>
+</section><div id="printArea" style="display:none"></div>
+</main>
+</div><footer>Homeopathic Patient Management System | Private Patient Records</footer><div class="modal" id="patientModal">
+<div class="modal-box">
+<div class="modal-head"><h3>Patient Details</h3><button class="danger" onclick="closeModal()">Close</button></div>
+<div id="patientModalContent"></div>
+</div>
+</div><script>
+"use strict";
+
+const API_URL="https://script.google.com/macros/s/AKfycbzDr6FopBQ8ZlButaibHcahbCwOth82JJskMn5T-uK0lBW5DVOIFaX4paKYdm3gobkm/exec";
+
+let patients=[];
+let searchTimer=null;
+let messageTimer=null;
+let activePage="dashboard";
+let currentPatient=null;
+let currentMedicines=[];
+let currentVisits=[];
+let currentCases=[];
+let currentInvestigations=[];
+let language=localStorage.getItem("hpms_language")||"en";
+
+const translations={
+hi:{
+appTitle:"होम्योपैथिक रोगी प्रबंधन प्रणाली",dashboard:"डैशबोर्ड",
+registration:"रोगी पंजीकरण",patientList:"रोगी सूची",caseHistory:"केस हिस्ट्री",
+visits:"विजिट एवं फॉलो-अप",medicines:"दवा रिकॉर्ड",investigations:"जाँच रिकॉर्ड",
+reports:"रिपोर्ट",totalPatients:"कुल मरीज",activePatients:"सक्रिय मरीज",
+totalVisits:"कुल विजिट",todayVisits:"आज की विजिट",totalMedicines:"दवा रिकॉर्ड",
+welcome:"स्वागत है",welcomeText:"रोगी पंजीकरण, केस हिस्ट्री, विजिट और जाँच रिकॉर्ड प्रबंधित करें।",
+refresh:"रिफ्रेश करें",viewPatients:"रोगी देखें",patientName:"रोगी का नाम *",
+age:"आयु",gender:"लिंग",mobile:"मोबाइल",address:"पता",occupation:"व्यवसाय",
+bloodGroup:"ब्लड ग्रुप",emergencyContact:"आपातकालीन संपर्क",medicalNotes:"मेडिकल नोट्स",
+savePatient:"रोगी सेव करें"
+}
+};
+
+function t(key){
+return language==="hi"?(translations.hi[key]||key):({
+appTitle:"Homeopathic Patient Management System",
+dashboard:"Dashboard",registration:"Patient Registration",patientList:"Patient List",
+caseHistory:"Case History",visits:"Visits & Follow-up",medicines:"Medicine Records",
+investigations:"Investigations",reports:"Reports",totalPatients:"Total Patients",
+activePatients:"Active Patients",totalVisits:"Total Visits",todayVisits:"Today's Visits",
+totalMedicines:"Medicine Records",welcome:"Welcome",
+welcomeText:"Manage patient registration, case history, visits and investigation records.",
+refresh:"Refresh Dashboard",viewPatients:"View Patients",patientName:"Patient Name *",
+age:"Age",gender:"Gender",mobile:"Mobile",address:"Address",occupation:"Occupation",
+bloodGroup:"Blood Group",emergencyContact:"Emergency Contact",medicalNotes:"Medical Notes",
+savePatient:"Save Patient"
+}[key]||key);
+}
+
+function applyLanguage(){
+document.querySelectorAll("[data-i18n]").forEach(el=>{
+el.textContent=t(el.dataset.i18n);
+});
+document.documentElement.lang=language;
+}
+
+function toggleLanguage(){
+language=language==="en"?"hi":"en";
+localStorage.setItem("hpms_language",language);
+applyLanguage();
+msg(language==="hi"?"भाषा हिंदी में बदल दी गई।":"Language changed to English.");
+}
+
+function api(action,data={}){
+return new Promise((resolve,reject)=>{
+const callback="jsonp_"+Date.now()+"_"+Math.floor(Math.random()*1000000);
+const script=document.createElement("script");
+let finished=false;
+const timer=setTimeout(()=>{
+if(finished)return;
+finished=true;cleanup();
+reject(new Error("API timeout. Check internet connection and deployment."));
+},25000);
+function cleanup(){
+clearTimeout(timer);delete window[callback];
+script.onerror=null;script.remove();
+}
+window[callback]=response=>{
+if(finished)return;
+finished=true;cleanup();
+if(!response||typeof response!=="object"){
+reject(new Error("Invalid API response."));
+return;
+}
+resolve(response);
+};
+const params=new URLSearchParams();
+params.set("action",action);
+params.set("data",JSON.stringify(data));
+params.set("callback",callback);
+script.src=API_URL+"?"+params.toString();
+script.onerror=()=>{
+if(finished)return;
+finished=true;cleanup();
+reject(new Error("Unable to connect to Apps Script."));
+};
+document.head.appendChild(script);
+});
+}
+
+function msg(text,type="success"){
+const box=document.getElementById("message");
+box.textContent=text;box.className="msg "+type;box.style.display="block";
+clearTimeout(messageTimer);
+messageTimer=setTimeout(()=>box.style.display="none",5000);
+}
+
+function esc(value){
+return String(value??"").replace(/[&<>"']/g,c=>({
+"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+})[c]);
+}
+
+function page(id,button){
+const target=document.getElementById(id);
+if(!target)return;
+document.querySelectorAll(".page").forEach(s=>s.classList.remove("active"));
+target.classList.add("active");
+document.querySelectorAll(".sidebar button").forEach(b=>b.classList.remove("active"));
+if(button)button.classList.add("active");
+activePage=id;
+if(id==="dashboard")dashboard();
+if(id==="patients")loadPatients();
+if(["case","visits","medicine","investigations","reports"].includes(id))loadPatients();
+}
+
+async function dashboard(){
+try{
+const r=await api("dashboard");
+if(!r.success)throw new Error(r.message||"Dashboard error");
+document.getElementById("totalPatients").textContent=r.totalPatients??0;
+document.getElementById("activePatients").textContent=r.activePatients??0;
+document.getElementById("totalVisits").textContent=r.totalVisits??0;
+document.getElementById("todayVisits").textContent=r.todayVisits??0;
+document.getElementById("totalMedicines").textContent=r.totalMedicineRecords??0;
+document.getElementById("connectionStatus").textContent="API Connected";
+}catch(e){
+document.getElementById("connectionStatus").textContent="API Connection Error";
+msg(e.message,"error");
+}
+}
+
+document.getElementById("patientForm").addEventListener("submit",async function(e){
+e.preventDefault();
+const form=this,button=form.querySelector('[type="submit"]');
+const data=Object.fromEntries(new FormData(form).entries());
+if(!data.Patient_Name.trim()){msg("Patient name is required.","error");return;}
+button.disabled=true;button.textContent="Saving...";
+try{
+const r=await api("savePatient",data);
+if(!r.success)throw new Error(r.message||"Save failed");
+msg("Patient saved successfully. Patient ID: "+r.patientId);
+form.reset();await loadPatients();await dashboard();
+}catch(e){msg(e.message,"error");}
+finally{button.disabled=false;button.textContent=t("savePatient");}
+});
+
+async function loadPatients(){
+const search=document.getElementById("search")?.value||"";
+const tbody=document.getElementById("patientTable");
+if(activePage==="patients"&&tbody)tbody.innerHTML="<tr><td colspan='6'>Loading...</td></tr>";
+try{
+const r=await api("getPatients",{search});
+if(!r.success)throw new Error(r.message||"Patient loading failed");
+patients=Array.isArray(r.data)?r.data:[];
+renderPatients();fillPatientDropdowns();
+}catch(e){
+if(tbody&&activePage==="patients")tbody.innerHTML="<tr><td colspan='6'>Unable to load patients.</td></tr>";
+msg(e.message,"error");
+}
+}
+
+function renderPatients(){
+const tbody=document.getElementById("patientTable");
+if(!tbody)return;
+tbody.innerHTML="";
+let list=[...patients];
+const sort=document.getElementById("sortPatients")?.value||"name";
+list.sort((a,b)=>{
+if(sort==="age")return Number(a.Age||0)-Number(b.Age||0);
+if(sort==="id")return String(a.Patient_ID||"").localeCompare(String(b.Patient_ID||""));
+return String(a.Patient_Name||"").localeCompare(String(b.Patient_Name||""));
+});
+if(!list.length){tbody.innerHTML="<tr><td colspan='6'>No patients found</td></tr>";return;}
+list.forEach(p=>{
+const tr=document.createElement("tr");
+tr.innerHTML=`<td>${esc(p.Patient_ID)}</td><td>${esc(p.Patient_Name)}</td>
+<td>${esc(p.Age)}</td><td>${esc(p.Gender)}</td><td>${esc(p.Mobile)}</td>
+<td><button class="secondary action-btn" type="button">View</button>
+<button class="secondary action-btn" type="button">ID Card</button></td>`;
+const buttons=tr.querySelectorAll("button");
+buttons[0].onclick=()=>viewPatient(p.Patient_ID);
+buttons[1].onclick=()=>printIDCard(p);
+tbody.appendChild(tr);
+});
+}
+
+document.getElementById("sortPatients").addEventListener("change",renderPatients);
+
+function fillPatientDropdowns(){
+document.querySelectorAll(".patientSelect").forEach(select=>{
+const old=select.value;
+select.innerHTML='<option value="">Select Patient</option>';
+patients.forEach(p=>{
+const o=document.createElement("option");
+o.value=p.Patient_ID;o.textContent=p.Patient_Name+" ("+p.Patient_ID+")";
+select.appendChild(o);
+});
+select.value=old;
+});
+}
+
+async function getPatient(id){
+const r=await api("getPatient",{patientId:id});
+if(!r.success||!r.data)throw new Error("Patient not found");
+return r.data;
+}
+
+async function viewPatient(id){
+try{
+const p=await getPatient(id);currentPatient=p;
+const content=document.getElementById("patientModalContent");
+content.innerHTML=`
+<div class="id-card">
+<div class="id-head"><h2>Patient Details</h2><b>Homeopathic Patient Management System</b></div>
+<div class="id-body">
+<b>Patient ID:</b> ${esc(p.Patient_ID)}<br>
+<b>Name:</b> ${esc(p.Patient_Name)}<br>
+<b>Age:</b> ${esc(p.Age)}<br>
+<b>Gender:</b> ${esc(p.Gender)}<br>
+<b>Mobile:</b> ${esc(p.Mobile)}<br>
+<b>Address:</b> ${esc(p.Address)}<br>
+<b>Occupation:</b> ${esc(p.Occupation)}<br>
+<b>Blood Group:</b> ${esc(p.Blood_Group)}<br>
+<b>Emergency Contact:</b> ${esc(p.Emergency_Contact)}
+</div></div>
+<div class="toolbar no-print">
+<button class="primary" onclick="printIDCard(currentPatient)">Print ID Card</button>
+<button class="secondary" onclick="printCaseSheet('${esc(p.Patient_ID)}')">Print Case Sheet</button>
+</div>`;
+document.getElementById("patientModal").style.display="block";
+}catch(e){msg(e.message,"error");}
+}
+
+function closeModal(){document.getElementById("patientModal").style.display="none";}
+
+function printDocument(title,html){
+const w=window.open("","_blank");
+if(!w){msg("Please allow pop-ups to print.","error");return;}
+w.document.open();
+w.document.write(`<!DOCTYPE html><html><head><title>${esc(title)}</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+body{font-family:Arial,sans-serif;padding:25px;color:#222}
+h1,h2{text-align:center;color:#00574b}
+table{width:100%;border-collapse:collapse;margin:12px 0}
+td,th{border:1px solid #aaa;padding:8px;text-align:left;font-size:13px}
+th{background:#e0f2f1}
+.section{border:1px solid #ddd;padding:12px;margin:12px 0;border-radius:8px}
+.line{margin:8px 0;white-space:pre-wrap}
+@media print{button{display:none}}
+</style></head><body>${html}<script>window.onload=function(){setTimeout(function(){window.print()},400)};<\/script>
+</body></html>`);
+w.document.close();
+}
+
+function printIDCard(p){
+if(!p)return;
+const html=`<div class="id-card">
+<div class="id-head"><h2>Patient ID Card</h2><b>Homeopathic Patient Management System</b></div>
+<div class="id-body">
+<p><b>Patient ID:</b> ${esc(p.Patient_ID)}</p>
+<p><b>Name:</b> ${esc(p.Patient_Name)}</p>
+<p><b>Age:</b> ${esc(p.Age)}</p>
+<p><b>Gender:</b> ${esc(p.Gender)}</p>
+<p><b>Mobile:</b> ${esc(p.Mobile)}</p>
+<p><b>Blood Group:</b> ${esc(p.Blood_Group)}</p>
+</div><div class="id-footer">Please carry this card during visits.</div></div>`;
+printDocument("Patient ID Card",html);
+}
+
+function saveForm(formId,action,successMessage,recordAction,recordBox){
+const form=document.getElementById(formId);
+form.addEventListener("submit",async function(e){
+e.preventDefault();
+const button=form.querySelector('[type="submit"]');
+const data=Object.fromEntries(new FormData(form).entries());
+button.disabled=true;const old=button.textContent;button.textContent="Saving...";
+try{
+const r=await api(action,data);
+if(!r.success)throw new Error(r.message||"Unable to save record");
+msg(successMessage);
+form.reset();
+if(recordAction&&data.Patient_ID){
+const select=form.querySelector('[name="Patient_ID"]');
+if(select)select.value=data.Patient_ID;
+await loadRecords(recordAction,data.Patient_ID,recordBox);
+}
+if(action==="saveVisit"||action==="saveMedicine")await dashboard();
+}catch(e){msg(e.message,"error");}
+finally{button.disabled=false;button.textContent=old;}
+});
+}
+
+saveForm("caseForm","saveCaseHistory","Case history saved successfully","getCaseHistory","caseRecords");
+saveForm("visitForm","saveVisit","Visit saved successfully","getVisits","visitRecords");
+saveForm("medicineForm","saveMedicine","Medicine record saved successfully","getMedicines","medicineRecords");
+saveForm("investigationForm","saveInvestigation","Investigation saved successfully","getInvestigations","investigationRecords");
+
+async function loadRecords(action,patientId,elementId){
+const box=document.getElementById(elementId);
+if(!patientId){box.textContent="Select a patient.";return [];}
+box.textContent="Loading...";
+try{
+const r=await api(action,{patientId});
+if(!r.success)throw new Error(r.message||"Unable to load records");
+const records=Array.isArray(r.data)?r.data:[];
+if(action==="getCaseHistory")currentCases=records;
+if(action==="getVisits")currentVisits=records;
+if(action==="getMedicines")currentMedicines=records;
+if(action==="getInvestigations")currentInvestigations=records;
+box.innerHTML="";
+if(!records.length){box.textContent="No records found.";return records;}
+records.forEach(record=>{
+const div=document.createElement("div");div.className="record";
+Object.keys(record).forEach(key=>{
+if(["Patient_ID","Record_ID","Visit_ID","Medicine_ID","Investigation_ID"].includes(key))return;
+const value=record[key];
+if(value===""||value===null||value===undefined)return;
+const line=document.createElement("div");
+const label=document.createElement("strong");
+label.textContent=key.replace(/_/g," ")+": ";
+line.appendChild(label);line.appendChild(document.createTextNode(String(value)));
+div.appendChild(line);
+});
+box.appendChild(div);
+});
+return records;
+}catch(e){box.textContent=e.message;return [];}
+}
+
+const dropdownMap={
+case:["getCaseHistory","caseRecords"],
+visits:["getVisits","visitRecords"],
+medicine:["getMedicines","medicineRecords"],
+investigations:["getInvestigations","investigationRecords"]
+};
+
+document.querySelectorAll(".patientSelect").forEach(select=>{
+select.addEventListener("change",async function(){
+const id=this.value,section=this.closest(".page");
+if(section&&dropdownMap[section.id]){
+await loadRecords(...dropdownMap[section.id],id);
+}
+});
+});
+
+document.getElementById("search").addEventListener("input",function(){
+clearTimeout(searchTimer);
+searchTimer=setTimeout(()=>{if(activePage==="patients")loadPatients();},400);
+});
+
+async function fetchAllForPatient(id){
+const p=await getPatient(id);
+const [cases,visits,medicines,investigations]=await Promise.all([
+api("getCaseHistory",{patientId:id}),
+api("getVisits",{patientId:id}),
+api("getMedicines",{patientId:id}),
+api("getInvestigations",{patientId:id})
+]);
+return {
+patient:p,
+cases:cases.success&&Array.isArray(cases.data)?cases.data:[],
+visits:visits.success&&Array.isArray(visits.data)?visits.data:[],
+medicines:medicines.success&&Array.isArray(medicines.data)?medicines.data:[],
+investigations:investigations.success&&Array.isArray(investigations.data)?investigations.data:[]
+};
+}
+
+function recordHTML(title,records){
+let html=`<div class="section"><h3>${esc(title)}</h3>`;
+if(!records.length)return html+"<p>No records found.</p></div>";
+records.forEach(r=>{
+html+="<div class='section'>";
+Object.keys(r).forEach(k=>{
+if(["Patient_ID","Record_ID","Visit_ID","Medicine_ID","Investigation_ID"].includes(k))return;
+if(r[k]!==""&&r[k]!==null&&r[k]!==undefined)
+html+=`<div class="line"><b>${esc(k.replace(/_/g," "))}:</b> ${esc(r[k])}</div>`;
+});
+html+="</div>";
+});
+return html+"</div>";
+}
+
+async function printCaseSheet(id){
+try{
+const d=await fetchAllForPatient(id),p=d.patient;
+let html=`<h1>Patient Case Sheet</h1><h2>Homeopathic Patient Management System</h2>
+<div class="section"><h3>Patient Information</h3>
+<p><b>Patient ID:</b> ${esc(p.Patient_ID)}</p>
+<p><b>Name:</b> ${esc(p.Patient_Name)}</p>
+<p><b>Age:</b> ${esc(p.Age)}</p><p><b>Gender:</b> ${esc(p.Gender)}</p>
+<p><b>Mobile:</b> ${esc(p.Mobile)}</p><p><b>Address:</b> ${esc(p.Address)}</p>
+<p><b>Blood Group:</b> ${esc(p.Blood_Group)}</p></div>`;
+html+=recordHTML("Case History",d.cases);
+html+=recordHTML("Visits & Follow-up",d.visits);
+html+=recordHTML("Medicine Records",d.medicines);
+html+=recordHTML("Investigations",d.investigations);
+printDocument("Patient Case Sheet",html);
+}catch(e){msg(e.message,"error");}
+}
+
+async function printPrescription(){
+const select=document.querySelector("#medicineForm [name='Patient_ID']");
+const id=select?.value;
+if(!id){msg("Please select a patient in Medicine Records.","error");return;}
+try{
+const d=await fetchAllForPatient(id);
+let html=`<h1>Prescription Record</h1><h2>Homeopathic Patient Management System</h2>
+<div class="section"><b>Patient:</b> ${esc(d.patient.Patient_Name)}<br>
+<b>Patient ID:</b> ${esc(d.patient.Patient_ID)}<br>
+<b>Age:</b> ${esc(d.patient.Age)}<br><b>Date:</b> ${new Date().toLocaleDateString()}</div>`;
+html+=recordHTML("Recorded Medicines",d.medicines);
+html+=`<p><b>Note:</b> This printout reproduces saved medicine records. It is not a new prescription or treatment recommendation.</p>
+<br><br><p>_________________________<br>Authorized Signature</p>`;
+printDocument("Prescription Record",html);
+}catch(e){msg(e.message,"error");}
+}
+
+async function generatePatientReport(){
+const id=document.getElementById("reportPatient").value;
+const box=document.getElementById("patientReport");
+if(!id){msg("Select a patient first.","error");return;}
+box.textContent="Generating report...";
+try{
+const d=await fetchAllForPatient(id);
+let html=`<h3>Patient Report: ${esc(d.patient.Patient_Name)}</h3>
+<p><b>Patient ID:</b> ${esc(d.patient.Patient_ID)}</p>
+<div class="report-grid">
+<div class="stat">Case Histories<b>${d.cases.length}</b></div>
+<div class="stat">Visits<b>${d.visits.length}</b></div>
+<div class="stat">Medicine Records<b>${d.medicines.length}</b></div>
+<div class="stat">Investigations<b>${d.investigations.length}</b></div>
+</div>
+<div class="toolbar no-print">
+<button class="primary" onclick="printCaseSheet('${esc(id)}')">Print Full Case Sheet</button>
+</div>`;
+box.innerHTML=html;
+}catch(e){box.textContent=e.message;}
+}
+
+function getDateValue(record){
+const keys=["Visit_Date","Followup_Date","Test_Date","Date","Timestamp","Created_At"];
+for(const k of keys){if(record[k])return new Date(record[k]);}
+return null;
+}
+
+async function generateSummary(){
+const box=document.getElementById("summaryReport");
+const year=document.getElementById("reportYear").value;
+const month=document.getElementById("reportMonth").value;
+box.textContent="Generating summary...";
+try{
+const list=patients.length?patients:(await api("getPatients",{})).data||[];
+let visits=0,medicines=0,investigations=0,cases=0;
+let matchedVisits=0,matchedMedicines=0,matchedInvestigations=0,matchedCases=0;
+for(const p of list){
+const results=await Promise.all([
+api("getVisits",{patientId:p.Patient_ID}),
+api("getMedicines",{patientId:p.Patient_ID}),
+api("getInvestigations",{patientId:p.Patient_ID}),
+api("getCaseHistory",{patientId:p.Patient_ID})
+]);
+const arrays=results.map(r=>r.success&&Array.isArray(r.data)?r.data:[]);
+visits+=arrays[0].length;medicines+=arrays[1].length;
+investigations+=arrays[2].length;cases+=arrays[3].length;
+const count=(arr)=>{
+return arr.filter(r=>{
+const d=getDateValue(r);
+if(!d||isNaN(d.getTime()))return false;
+return d.getFullYear()===Number(year)&&(month==="all"||String(d.getMonth()+1).padStart(2,"0")===month);
+}).length;
+};
+matchedVisits+=count(arrays[0]);matchedMedicines+=count(arrays[1]);
+matchedInvestigations+=count(arrays[2]);matchedCases+=count(arrays[3]);
+}
+box.innerHTML=`
+<h3>Summary: ${esc(month==="all"?"Full Year":month+"/"+year)}</h3>
+<div class="report-grid">
+<div class="stat">Total Patients<b>${list.length}</b></div>
+<div class="stat">All Visits<b>${visits}</b></div>
+<div class="stat">All Medicine Records<b>${medicines}</b></div>
+<div class="stat">All Investigations<b>${investigations}</b></div>
+<div class="stat">Period Visits<b>${matchedVisits}</b></div>
+<div class="stat">Period Medicines<b>${matchedMedicines}</b></div>
+<div class="stat">Period Investigations<b>${matchedInvestigations}</b></div>
+<div class="stat">Period Case Histories<b>${matchedCases}</b></div>
+</div>
+<p class="small">Period counts include only records with a readable date in the existing API response. This summary is generated from currently accessible patient records.</p>
+<div class="toolbar no-print"><button class="primary" onclick="printSummary()">Print Summary</button></div>`;
+}catch(e){box.textContent=e.message;msg(e.message,"error");}
+}
+
+function printSummary(){
+const html=document.getElementById("summaryReport").innerHTML;
+printDocument("Summary Report",html);
+}
+
+function initYears(){
+const select=document.getElementById("reportYear");
+const y=new Date().getFullYear();
+for(let i=y;i>=y-10;i--){
+const o=document.createElement("option");o.value=i;o.textContent=i;select.appendChild(o);
+}
+}
+
+window.addEventListener("load",async()=>{
+const now=new Date();
+const localDate=new Date(now.getTime()-now.getTimezoneOffset()*60000).toISOString().slice(0,10);
+document.getElementById("visitDate").value=localDate;
+initYears();applyLanguage();
+await dashboard();await loadPatients();
+});
+</script></body>
+</html>
